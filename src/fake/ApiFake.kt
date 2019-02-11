@@ -22,7 +22,7 @@ class ApiFake : Api {
 
     override fun register(name: String, email: String, password: String): Promise<RegisterResponse> {
         if (nameExists(name)) return Promise.reject(RuntimeException("User named \"$name\" already exists"))
-        if (emailExists(name)) return Promise.reject(RuntimeException("User with email \"$email\" already exists"))
+        if (emailExists(email)) return Promise.reject(RuntimeException("User with email \"$email\" already exists"))
         val user = User(name, email, password)
         users.add(user)
         return Promise.resolve(RegisterResponse(name))
