@@ -9,7 +9,7 @@ import Html.password
 import org.w3c.dom.HTMLElement
 
 class Login: Renderable {
-    override fun render(handleEvent: (GenericEvent) -> Unit): HTMLElement {
+    override fun render(model: Model, handleEvent: (GenericEvent) -> Unit): HTMLElement {
         val caption = header("Login")
         val nameOrEmail = input(placeholder = "name or email")
         val password = password(placeholder = "password")

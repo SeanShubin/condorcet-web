@@ -10,7 +10,7 @@ object CondorcetEffects{
             body.clear()
             val page = model.page
             val component = components[page]
-            val rendered = component.render(handleEvent)
+            val rendered = component.render(model, handleEvent)
             body.appendChild(rendered)
         }
     }
