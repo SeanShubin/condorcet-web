@@ -48,7 +48,8 @@ class CondorcetReactor(private val api: Api) : Reactor {
         }.catch { throwable ->
             FireEvent(LoginFailure(throwable.message))
         }
-        return Result(model, listOf(effect))
+        val newLogin = model.login.copy(nameOrEmail = event.nameOrEmail, password = event.password)
+        return Result(model.copy(login = newLogin), listOf(effect))
     }
 
     private fun loginSuccess(model: Model, event: LoginSuccess): Result =
@@ -58,6 +59,12 @@ class CondorcetReactor(private val api: Api) : Reactor {
             Result(model.withLoginError(event.reason), render())
 
     private fun registerRequest(model: Model, event: RegisterRequest): Result {
+        val newRegisterModel = model.register.copy(
+                name = event.name,
+                email = event.email,
+                password = event.password,
+                confirmPassword = event.confirmPassword)
+        val newModel = model.copy(register = newRegisterModel)
         return if (event.password == event.confirmPassword) {
             val promise = api.register(event.name, event.email, event.password)
             val effect = promise.then { registerResponse ->
@@ -65,10 +72,10 @@ class CondorcetReactor(private val api: Api) : Reactor {
             }.catch { throwable ->
                 FireEvent(RegisterFailure(throwable.message))
             }
-            Result(model, listOf(effect))
+            Result(newModel, listOf(effect))
         } else {
             val effect = FireEvent(RegisterFailure("Password does not match confirmation password"))
-            Result(model, listOf(Promise.resolve(effect)))
+            Result(newModel, listOf(Promise.resolve(effect)))
         }
     }
 

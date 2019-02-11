@@ -46,13 +46,21 @@ data class Model(val page: String,
     companion object {
         val empty = Model(
                 page = "login",
-                login = LoginModel(error = null),
-                register = RegisterModel(error = null),
+                login = LoginModel(
+                        nameOrEmail = "",
+                        password = "",
+                        error = null),
+                register = RegisterModel(
+                        name = "",
+                        email = "",
+                        password = "",
+                        confirmPassword = "",
+                        error = null),
                 home = HomeModel(name = "", error = null),
                 debug = DebugModel(error = null))
 
-        data class LoginModel(val error: String?)
-        data class RegisterModel(val error: String?)
+        data class LoginModel(val nameOrEmail: String, val password: String, val error: String?)
+        data class RegisterModel(val name: String, val email: String, val password: String, val confirmPassword: String, val error: String?)
         data class HomeModel(val name: String, val error: String?)
         data class DebugModel(val error: String?)
     }

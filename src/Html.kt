@@ -9,14 +9,15 @@ object Html{
         return element
     }
 
-    fun input(placeholder: String): HTMLInputElement {
+    fun input(text: String, placeholder: String): HTMLInputElement {
         val input = document.createElement("input") as HTMLInputElement
         input.placeholder = placeholder
+        input.value = text
         return input
     }
 
-    fun password(placeholder: String): HTMLInputElement {
-        val password = input(placeholder = placeholder)
+    fun password(text: String, placeholder: String): HTMLInputElement {
+        val password = input(text = text, placeholder = placeholder)
         password.type = "password"
         return password
     }

@@ -14,10 +14,9 @@ class Login: Renderable {
         val loginModel = model.login
         val caption = header("Login")
         val error = if (loginModel.error == null) listOf() else listOf(span(loginModel.error, "error"))
-        val nameOrEmail = input(placeholder = "name or email")
-        val password = password(placeholder = "password")
+        val nameOrEmail = input(text = loginModel.nameOrEmail, placeholder = "name or email")
+        val password = password(text = loginModel.password, placeholder = "password")
         val handleLogin = {
-            console.log("handleLogin")
             handleEvent(LoginRequest(nameOrEmail.value, password.value))
         }
         val loginButton = button(text = "Login", onclick = handleLogin)

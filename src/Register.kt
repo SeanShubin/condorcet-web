@@ -14,10 +14,10 @@ class Register : Renderable {
         val registerModel = model.register
         val caption = header("Register")
         val error = if (registerModel.error == null) listOf() else listOf(span(registerModel.error, "error"))
-        val name = input(placeholder = "name")
-        val email = input(placeholder = "email")
-        val password = password(placeholder = "password")
-        val confirmPassword = password(placeholder = "confirm password")
+        val name = input(text = registerModel.name, placeholder = "name")
+        val email = input(text = registerModel.email, placeholder = "email")
+        val password = password(text = registerModel.password, placeholder = "password")
+        val confirmPassword = password(text = registerModel.confirmPassword, placeholder = "confirm password")
         val handleRegister = { handleEvent(RegisterRequest(name.value, email.value, password.value, confirmPassword.value)) }
         val registerButton = button(text = "Register", onclick = handleRegister)
         val handleLogin = { handleEvent(NavigateToLoginRequest) }
