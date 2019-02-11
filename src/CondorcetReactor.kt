@@ -75,17 +75,17 @@ class CondorcetReactor(private val api: Api) : Reactor {
     private fun registerSuccess(model: Model, event: RegisterSuccess) =
             Result(model.withHome(name = event.name), render())
 
-    private fun logoutRequest(model: Model) = Result(model.copy(page = "login"), render())
+    private fun logoutRequest(model: Model) = Result(model.withLogin(), render())
 
     private fun registerFailure(model: Model, event: RegisterFailure) = Result(model.withRegisterError(event.reason), render())
 
-    private fun navigateToLoginRequest(model: Model) = Result(model.copy(page = "login"), render())
+    private fun navigateToLoginRequest(model: Model) = Result(model.withLogin(), render())
 
-    private fun navigateToRegisterRequest(model: Model) = Result(model.copy(page = "register"), render())
+    private fun navigateToRegisterRequest(model: Model) = Result(model.withRegister(), render())
 
-    private fun navigateToHomeRequest(model: Model) = Result(model.copy(page = "home"), render())
+    private fun navigateToHomeRequest(model: Model) = Result(model.withHome(), render())
 
-    private fun navigateToDebugRequest(model: Model) = Result(model.copy(page = "debug"), render())
+    private fun navigateToDebugRequest(model: Model) = Result(model.withDebug(), render())
 
     private fun unsupportedEvent(model: Model, event: GenericEvent) =
             Result(model.withUnsupportedError(error = "Unsupported event: $event"), emptyList())

@@ -15,12 +15,32 @@ data class Model(val page: String,
 
     fun withUnsupportedError(error: String?): Model {
         val newDebug = debug.copy(error = error)
-        return copy(page = "login", debug = newDebug)
+        return copy(page = "debug", debug = newDebug)
+    }
+
+    fun withLogin(): Model {
+        val newLogin = login.copy(error = null)
+        return copy(page = "login", login = newLogin)
+    }
+
+    fun withRegister(): Model {
+        val newRegister = register.copy(error = null)
+        return copy(page = "register", register = newRegister)
+    }
+
+    fun withHome(): Model {
+        val newHome = home.copy(error = null)
+        return copy(page = "home", home = newHome)
     }
 
     fun withHome(name: String): Model {
-        val newHome = home.copy(name = name)
+        val newHome = home.copy(name = name, error = null)
         return copy(page = "home", home = newHome)
+    }
+
+    fun withDebug(): Model {
+        val newDebug = debug.copy(error = null)
+        return copy(page = "debug", debug = newDebug)
     }
 
     companion object {
