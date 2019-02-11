@@ -7,10 +7,9 @@ import Html.input
 import Html.link
 import Html.password
 import Html.span
-import org.w3c.dom.HTMLElement
 
 class Register : Renderable {
-    override fun render(model: Model, handleEvent: (GenericEvent) -> Unit): HTMLElement {
+    override fun render(model: Model, handleEvent: (GenericEvent) -> Unit): RenderedAndFocused {
         val registerModel = model.register
         val caption = header("Register")
         val error = if (registerModel.error == null) listOf() else listOf(span(registerModel.error, "error"))
@@ -23,6 +22,7 @@ class Register : Renderable {
         val handleLogin = { handleEvent(NavigateToLoginRequest) }
         val loginLink = link(text = "Login", onclick = handleLogin)
         val list = listOf(caption) + error + listOf(name, email, password, confirmPassword, registerButton, loginLink)
-        return div(contents = list, className = "single-column-flex")
+        val rendered = div(contents = list, className = "single-column-flex")
+        return RenderedAndFocused(rendered, focused = name)
     }
 }
