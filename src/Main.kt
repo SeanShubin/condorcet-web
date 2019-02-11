@@ -1,3 +1,4 @@
+import fake.ApiFake
 import kotlin.browser.document
 import kotlin.browser.window
 

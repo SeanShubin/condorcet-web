@@ -44,6 +44,13 @@ object Html{
         return div
     }
 
+    fun span(text: String, className: String): HTMLSpanElement {
+        val span = document.createElement("span") as HTMLSpanElement
+        span.textContent = text
+        span.addClass(className)
+        return span
+    }
+
     private fun appendChildren(element: HTMLElement, children: List<HTMLElement>) {
         children.forEach { element.append(it) }
     }
