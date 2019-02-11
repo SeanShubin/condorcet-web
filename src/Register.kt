@@ -1,15 +1,11 @@
-package page
-
-import event.CondorcetEvents.RegisterRequest
-import event.CondorcetEvents.NavigateToLoginRequest
-import generic.GenericEvent
-import generic.Renderable
-import html.Html.header
-import html.Html.input
-import html.Html.password
-import html.Html.button
-import html.Html.link
-import html.Html.div
+import CondorcetEvents.NavigateToLoginRequest
+import CondorcetEvents.RegisterRequest
+import Html.button
+import Html.div
+import Html.header
+import Html.input
+import Html.link
+import Html.password
 import org.w3c.dom.HTMLElement
 
 class Register : Renderable {

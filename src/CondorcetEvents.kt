@@ -1,7 +1,3 @@
-package event
-
-import generic.GenericEvent
-
 object CondorcetEvents {
     object Initialize : GenericEvent
     data class LoginRequest(val nameOrEmail: String, val password: String) : GenericEvent

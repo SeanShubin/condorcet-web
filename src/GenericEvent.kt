@@ -1,3 +1,1 @@
-package generic
-
 interface GenericEvent

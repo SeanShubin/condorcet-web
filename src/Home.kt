@@ -1,11 +1,7 @@
-package page
-
-import event.CondorcetEvents.LogoutRequest
-import generic.GenericEvent
-import generic.Renderable
-import html.Html.div
-import html.Html.header
-import html.Html.link
+import CondorcetEvents.LogoutRequest
+import Html.div
+import Html.header
+import Html.link
 import org.w3c.dom.HTMLElement
 
 class Home : Renderable {
