@@ -11,8 +11,9 @@ import org.w3c.dom.HTMLElement
 
 class Register : Renderable {
     override fun render(model: Model, handleEvent: (GenericEvent) -> Unit): HTMLElement {
+        val registerModel = model.register
         val caption = header("Register")
-        val error = if (model.error == null) listOf() else listOf(span(model.error, "error"))
+        val error = if (registerModel.error == null) listOf() else listOf(span(registerModel.error, "error"))
         val name = input(placeholder = "name")
         val email = input(placeholder = "email")
         val password = password(placeholder = "password")

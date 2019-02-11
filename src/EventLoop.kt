@@ -9,6 +9,9 @@ class EventLoop(private val reactor: Reactor,
         effects.forEach { promise ->
             promise.then { effect ->
                 effect.apply(newState, environment, components, this::handleEvent)
+            }.catch { throwable ->
+                console.log(throwable.message)
+                console.log(throwable.cause)
             }
         }
     }

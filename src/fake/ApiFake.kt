@@ -10,19 +10,19 @@ class ApiFake : Api {
     override fun login(nameOrEmail: String, password: String): Promise<LoginResponse> {
         val user = userByNameOrEmail(nameOrEmail)
         return if (user == null) {
-            Promise.reject(RuntimeException("User '$nameOrEmail' does not exist"))
+            Promise.reject(RuntimeException("User \"$nameOrEmail\" does not exist"))
         } else {
             if (password == user.password) {
                 Promise.resolve(LoginResponse(user.name))
             } else {
-                Promise.reject(RuntimeException("Bad password for user '$nameOrEmail'"))
+                Promise.reject(RuntimeException("Bad password for user \"$nameOrEmail\""))
             }
         }
     }
 
     override fun register(name: String, email: String, password: String): Promise<RegisterResponse> {
-        if (nameExists(name)) return Promise.reject(RuntimeException("User named '$name' already exists"))
-        if (emailExists(name)) return Promise.reject(RuntimeException("User with email '$email' already exists"))
+        if (nameExists(name)) return Promise.reject(RuntimeException("User named \"$name\" already exists"))
+        if (emailExists(name)) return Promise.reject(RuntimeException("User with email \"$email\" already exists"))
         val user = User(name, email, password)
         users.add(user)
         return Promise.resolve(RegisterResponse(name))

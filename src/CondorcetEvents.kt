@@ -10,4 +10,5 @@ object CondorcetEvents {
     object NavigateToRegisterRequest : GenericEvent
     object NavigateToLoginRequest : GenericEvent
     object NavigateToHomeRequest : GenericEvent
+    object NavigateToDebugRequest : GenericEvent
 }

@@ -51,6 +51,12 @@ object Html{
         return span
     }
 
+    fun pre(text: String): HTMLPreElement {
+        val span = document.createElement("pre") as HTMLPreElement
+        span.textContent = text
+        return span
+    }
+
     private fun appendChildren(element: HTMLElement, children: List<HTMLElement>) {
         children.forEach { element.append(it) }
     }

@@ -11,8 +11,9 @@ import org.w3c.dom.HTMLElement
 
 class Login: Renderable {
     override fun render(model: Model, handleEvent: (GenericEvent) -> Unit): HTMLElement {
+        val loginModel = model.login
         val caption = header("Login")
-        val error = if (model.error == null) listOf() else listOf(span(model.error, "error"))
+        val error = if (loginModel.error == null) listOf() else listOf(span(loginModel.error, "error"))
         val nameOrEmail = input(placeholder = "name or email")
         val password = password(placeholder = "password")
         val handleLogin = {
