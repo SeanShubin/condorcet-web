@@ -17,5 +17,5 @@
 }
 
 :focus {
-    border: solid blue 1px;
+    border: dotted blue 1px;
 }

@@ -53,7 +53,7 @@ class CondorcetReactor(private val api: Api) : Reactor {
     }
 
     private fun loginSuccess(model: Model, event: LoginSuccess): Result =
-            Result(model.withHome(name = event.name), render())
+            Result(model.purgePasswords().withHome(name = event.name), render())
 
     private fun loginFailure(model: Model, event: LoginFailure): Result =
             Result(model.withLoginError(event.reason), render())
@@ -80,9 +80,9 @@ class CondorcetReactor(private val api: Api) : Reactor {
     }
 
     private fun registerSuccess(model: Model, event: RegisterSuccess) =
-            Result(model.withHome(name = event.name), render())
+            Result(model.purgePasswords().withHome(name = event.name), render())
 
-    private fun logoutRequest(model: Model) = Result(model.withLogin(), render())
+    private fun logoutRequest(model: Model) = Result(model.purgePasswords().withLogin(), render())
 
     private fun registerFailure(model: Model, event: RegisterFailure) = Result(model.withRegisterError(event.reason), render())
 

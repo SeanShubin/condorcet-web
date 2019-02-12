@@ -43,6 +43,9 @@ data class Model(val page: String,
         return copy(page = "debug", debug = newDebug)
     }
 
+    fun purgePasswords(): Model =
+            copy(login = login.copy(password = ""), register = register.copy(password = "", confirmPassword = ""))
+
     companion object {
         val empty = Model(
                 page = "login",
