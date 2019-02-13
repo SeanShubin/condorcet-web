@@ -7,6 +7,7 @@ import kotlin.js.Promise
 
 class ApiFake : Api {
     private val users: MutableList<User> = mutableListOf()
+    private val elections: MutableList<Election>= mutableListOf()
     override fun login(nameOrEmail: String, password: String): Promise<LoginResponse> {
         val user = userByNameOrEmail(nameOrEmail)
         return if (user == null) {
@@ -27,6 +28,8 @@ class ApiFake : Api {
         users.add(user)
         return Promise.resolve(RegisterResponse(name))
     }
+
+    override fun createElection(credential: Credential, electionName: String): Promise<CreateElectionResponse>
 
     private fun userByName(name: String): User? = users.find { it.name == name }
     private fun userByEmail(email: String): User? = users.find { it.email == email }

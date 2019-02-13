@@ -5,6 +5,14 @@
 .single-column-flex {
     display:flex;
     flex-direction: column;
+}
+
+.single-column-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.small {
     width: 200px;
 }
 
@@ -18,4 +26,13 @@
 
 :focus {
     border: dotted blue 1px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td, th {
+    border: 1px solid black;
+    padding: 5px;
 }
