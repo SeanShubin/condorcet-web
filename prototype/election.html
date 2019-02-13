@@ -7,19 +7,75 @@
     <link rel="stylesheet" type="text/css" href="../index.css">
 </head>
 <body>
-<div class="single-column-flex small">
+<div class="single-column-flex">
     <h1>Election C</h1>
-    <input placeholder="start date">
-    <input placeholder="end date">
+    <div class="two-column-grid">
+        <span>Start</span>
+        <input type="datetime-local">
+        <span>End</span>
+        <input type="datetime-local">
+    </div>
     <span><input type="checkbox">Secret Ballot</span>
-    <span><input type="checkbox">Allow Monitoring</span>
-    <button type="button">Update Election</button>
-    <span>Candidates</span>
+    <table>
+        <thead>
+        <tr>
+            <th>candidates</th>
+            <th>remove</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>Candidate A</td>
+            <td>
+                <button>remove</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Candidate B</td>
+            <td>
+                <button>remove</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Candidate C</td>
+            <td>
+                <button>remove</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
     <textarea></textarea>
-    <button type="button">Update Candidates</button>
-    <span>Eligible Voters</span>
-    <textarea></textarea>
-    <button type="button">Update Voters</button>
+    <button type="button">Add Candidates</button>
+    <table>
+        <thead>
+        <tr>
+            <th>eligible</th>
+            <th>voter</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><input type="checkbox" checked></td>
+            <td>Voter A</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox"></td>
+            <td>Voter B</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" checked></td>
+            <td>Voter C</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" checked></td>
+            <td>Voter D</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox"></td>
+            <td>Voter E</td>
+        </tr>
+        </tbody>
+    </table>
     <a href="#">Home</a>
     <a href="#">Logout</a>
 </div>

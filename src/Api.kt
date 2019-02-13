@@ -6,18 +6,20 @@ interface Api {
     fun register(name: String, email: String, password: String): Promise<RegisterResponse>
     fun createElection(credential: Credential, electionName: String): Promise<CreateElectionResponse>
     fun getElection(credential: Credential, electionName: String): Promise<GetElectionResponse>
-    fun updateElection(credential: Credential,
-                       start: Date?,
-                       end: Date?,
-                       secretBallot: Boolean?,
-                       allowMonitoring: Boolean?): Promise<UpdateElectionResponse>
+    fun listElections(credential: Credential): Promise<ListElectionsResponse>
 
-    fun setCandidates(credential: Credential, electionName: String, candidates: List<String>): Promise<SetCandidatesResponse>
-    fun setEligibleVoters(credential: Credential, electionName: String, voters: List<String>): Promise<SetEligibleVotersResponse>
+    fun updateElectionStart(credential: Credential,start: Date?):Promise<UpdateElectionResponse>
+    fun updateElectionEnd(credential: Credential,end: Date?):Promise<UpdateElectionResponse>
+    fun updateElectionSecretBallot(credential: Credential,secretBallot:Boolean):Promise<UpdateElectionResponse>
+
+    fun addCandidates(credential: Credential, electionName: String, candidates: List<String>): Promise<SetCandidatesResponse>
+    fun removeCandidate(credential: Credential, electionName: String, candidate: String): Promise<SetCandidatesResponse>
+
+    fun setEligibleVoter(credential: Credential, electionName: String, voterName: String, eligable:Boolean): Promise<SetEligibleVotersResponse>
+
     fun closeElectionForEdits(credential: Credential, electionName: String): Promise<CloseElectionForEditsResponse>
     fun startElection(credential: Credential, electionName: String): Promise<StartElectionResponse>
     fun endElection(credential: Credential, electionName: String): Promise<EndElectionResponse>
-    fun listElections(credential: Credential): Promise<ListElectionsResponse>
     fun castBallot(credential: Credential, electionName: String, rankings: List<Ranking>): Promise<CastBallotResponse>
     fun abstain(credential: Credential, electionName: String, rankings: List<Ranking>): Promise<AbstainResponse>
     fun castEmptyVote(credential: Credential, electionName: String, rankings: List<Ranking>): Promise<CastEmptyVoteResponse>
@@ -32,7 +34,6 @@ interface Api {
                         val start: Date?,
                         val end: Date?,
                         val secretBallot: Boolean,
-                        val allowMonitoring: Boolean,
                         val status: ElectionStatus)
 
     data class Ranking(val rank: Int, val candidateName: String)
