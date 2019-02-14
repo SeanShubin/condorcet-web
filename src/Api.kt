@@ -8,26 +8,22 @@ interface Api {
     fun getElection(credential: Credential, electionName: String): Promise<GetElectionResponse>
     fun listElections(credential: Credential): Promise<ListElectionsResponse>
 
-    fun updateElectionStart(credential: Credential,start: Date?):Promise<UpdateElectionResponse>
-    fun updateElectionEnd(credential: Credential,end: Date?):Promise<UpdateElectionResponse>
-    fun updateElectionSecretBallot(credential: Credential,secretBallot:Boolean):Promise<UpdateElectionResponse>
+    fun updateElectionStart(credential: Credential, electionName: String, start: Date?): Promise<UpdateElectionResponse>
+    fun updateElectionEnd(credential: Credential, electionName: String, end: Date?): Promise<UpdateElectionResponse>
+    fun updateElectionSecretBallot(credential: Credential, electionName: String, secretBallot: Boolean): Promise<UpdateElectionResponse>
+    fun updateElectionStatus(credential: Credential, electionName: String, status: ElectionStatus): Promise<UpdateElectionResponse>
 
-    fun addCandidates(credential: Credential, electionName: String, candidates: List<String>): Promise<UpdateCandidatesResponse>
-    fun removeCandidate(credential: Credential, electionName: String, candidate: String): Promise<UpdateCandidatesResponse>
+    fun addCandidates(credential: Credential, electionName: String, candidateNames: List<String>): Promise<UpdateCandidatesResponse>
+    fun removeCandidate(credential: Credential, electionName: String, candidateName: String): Promise<UpdateCandidatesResponse>
 
-    fun setEligibleVoter(credential: Credential, electionName: String, voterName: String, eligable:Boolean): Promise<SetEligibleVotersResponse>
+    fun addVoters(credential: Credential, electionName: String, voterNames: List<String>): Promise<UpdateVotersResponse>
+    fun removeVoter(credential: Credential, electionName: String, voterName: String): Promise<UpdateVotersResponse>
 
-    fun closeElectionForEdits(credential: Credential, electionName: String): Promise<CloseElectionForEditsResponse>
-    fun startElection(credential: Credential, electionName: String): Promise<StartElectionResponse>
-    fun endElection(credential: Credential, electionName: String): Promise<EndElectionResponse>
-    fun castBallot(credential: Credential, electionName: String, rankings: List<Ranking>): Promise<CastBallotResponse>
-    fun abstain(credential: Credential, electionName: String, rankings: List<Ranking>): Promise<AbstainResponse>
-    fun castEmptyVote(credential: Credential, electionName: String, rankings: List<Ranking>): Promise<CastEmptyVoteResponse>
-    fun tally(credential: Credential, electionName: String): Promise<TallyResponse>
-    fun tallyDetail(credential: Credential, electionName: String): Promise<TallyDetailResponse>
+    fun setBallot(credential: Credential, electionName: String, rankings: List<Ranking>): Promise<SetBallotResponse>
+    fun removeBallot(credential: Credential, electionName: String): Promise<RemoveBallotResponse>
 
     data class Credential(val name: String, val password: String)
-    data class Election(val creatorName: String,
+    data class Election(val owner: String,
                         val name: String,
                         val start: Date?,
                         val end: Date?,
@@ -42,29 +38,14 @@ interface Api {
         CONCLUDED // election is over
     }
 
-    data class Ballot(val ballotId: String, val rankings: List<String>)
-    data class TallyDetail(val electionName: String,
-                           val candidates: List<String>,
-                           val voted: List<String>,
-                           val didNotVote: List<String>,
-                           val preferenceMatrix: List<List<Int>>,
-                           val strongestPathMatrix: List<List<Int>>,
-                           val ballots: List<Ballot>)
-
     data class LoginResponse(val name: String)
     data class RegisterResponse(val name: String)
     data class CreateElectionResponse(val election: Election)
     data class UpdateElectionResponse(val election: Election)
     data class GetElectionResponse(val election: Election)
-    data class UpdateCandidatesResponse(val electionName: String, val candidates: List<String>)
-    data class SetEligibleVotersResponse(val electionName: String, val voters: List<String>)
-    object StartElectionResponse
-    object EndElectionResponse
-    object CloseElectionForEditsResponse
+    data class UpdateCandidatesResponse(val electionName: String, val candidateNames: List<String>)
+    data class UpdateVotersResponse(val electionName: String, val voterNames: List<String>)
     data class ListElectionsResponse(val elections: List<Election>)
-    object CastBallotResponse
-    object AbstainResponse
-    object CastEmptyVoteResponse
-    data class TallyResponse(val electionName: String, val rankings: List<Ranking>)
-    data class TallyDetailResponse(val tallyDetail: TallyDetail)
+    object SetBallotResponse
+    object RemoveBallotResponse
 }
