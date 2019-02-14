@@ -12,8 +12,8 @@ interface Api {
     fun updateElectionEnd(credential: Credential,end: Date?):Promise<UpdateElectionResponse>
     fun updateElectionSecretBallot(credential: Credential,secretBallot:Boolean):Promise<UpdateElectionResponse>
 
-    fun addCandidates(credential: Credential, electionName: String, candidates: List<String>): Promise<SetCandidatesResponse>
-    fun removeCandidate(credential: Credential, electionName: String, candidate: String): Promise<SetCandidatesResponse>
+    fun addCandidates(credential: Credential, electionName: String, candidates: List<String>): Promise<UpdateCandidatesResponse>
+    fun removeCandidate(credential: Credential, electionName: String, candidate: String): Promise<UpdateCandidatesResponse>
 
     fun setEligibleVoter(credential: Credential, electionName: String, voterName: String, eligable:Boolean): Promise<SetEligibleVotersResponse>
 
@@ -26,8 +26,6 @@ interface Api {
     fun tally(credential: Credential, electionName: String): Promise<TallyResponse>
     fun tallyDetail(credential: Credential, electionName: String): Promise<TallyDetailResponse>
 
-    data class LoginResponse(val name: String)
-    data class RegisterResponse(val name: String)
     data class Credential(val name: String, val password: String)
     data class Election(val creatorName: String,
                         val name: String,
@@ -53,10 +51,12 @@ interface Api {
                            val strongestPathMatrix: List<List<Int>>,
                            val ballots: List<Ballot>)
 
+    data class LoginResponse(val name: String)
+    data class RegisterResponse(val name: String)
     data class CreateElectionResponse(val election: Election)
     data class UpdateElectionResponse(val election: Election)
     data class GetElectionResponse(val election: Election)
-    data class SetCandidatesResponse(val electionName: String, val candidates: List<String>)
+    data class UpdateCandidatesResponse(val electionName: String, val candidates: List<String>)
     data class SetEligibleVotersResponse(val electionName: String, val voters: List<String>)
     object StartElectionResponse
     object EndElectionResponse
