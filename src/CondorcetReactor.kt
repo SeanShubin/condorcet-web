@@ -1,5 +1,6 @@
 import CondorcetEffects.FireEvent
 import CondorcetEffects.Render
+import CondorcetEvents.GetElectionsFailure
 import CondorcetEvents.Initialize
 import CondorcetEvents.LoginFailure
 import CondorcetEvents.LoginRequest
@@ -35,7 +36,7 @@ class CondorcetReactor(private val api: Api) : Reactor {
             is NavigateToElectionsRequest -> navigateToElectionsRequest(model)
             else -> unsupportedEvent(model, event)
         }
-        console.log("react.result.mode", result.model)
+        console.log("react.result.model", result.model)
         console.log("react.result.effects", result.effects)
         return result
     }
@@ -51,11 +52,15 @@ class CondorcetReactor(private val api: Api) : Reactor {
             FireEvent(LoginFailure(throwable.message))
         }
         val newLogin = model.login.copy(nameOrEmail = event.nameOrEmail, password = event.password)
-        return Result(model.copy(login = newLogin), listOf(effect))
+        val newCredential = model.credential.copy(password = event.password)
+        return Result(model.copy(credential = newCredential, login = newLogin), listOf(effect))
     }
 
-    private fun loginSuccess(model: Model, event: LoginSuccess): Result =
-            Result(model.purgePasswords().withHome(name = event.name), render())
+    private fun loginSuccess(model: Model, event: LoginSuccess): Result {
+        val credential = model.credential.copy(name = event.name)
+        val newModel = model.copy(credential = credential).withHome(name = event.name)
+        return Result(newModel, render())
+    }
 
     private fun loginFailure(model: Model, event: LoginFailure): Result =
             Result(model.withLoginError(event.reason), render())
@@ -82,7 +87,7 @@ class CondorcetReactor(private val api: Api) : Reactor {
     }
 
     private fun registerSuccess(model: Model, event: RegisterSuccess) =
-            Result(model.purgePasswords().withHome(name = event.name), render())
+            Result(model.withHome(name = event.name), render())
 
     private fun logoutRequest(model: Model) = Result(model.purgePasswords().withLogin(), render())
 
@@ -107,6 +112,10 @@ class CondorcetReactor(private val api: Api) : Reactor {
         }
         return Result(newModel, listOf(renderEffect, getElectionsEffect))
     }
+
+    private fun getElectionsFailure(model: Model, event: GetElectionsFailure): Result =
+            Result(model.withElectionsError(event.reason), render())
+
     private fun unsupportedEvent(model: Model, event: GenericEvent) =
             Result(model.withUnsupportedError(error = "Unsupported event: $event"), render())
 

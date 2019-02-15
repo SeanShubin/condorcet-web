@@ -50,8 +50,20 @@ data class Model(val page: String,
         return copy(page = "elections", elections = newElections)
     }
 
+    fun withElectionsError(error: String?): Model {
+        val newElections = elections.copy(error = error)
+        return copy(page = "elections", elections = newElections)
+    }
+
     fun purgePasswords(): Model =
             copy(login = login.copy(password = ""), register = register.copy(password = "", confirmPassword = ""))
+
+    data class LoginModel(val nameOrEmail: String, val password: String, val error: String?)
+    data class RegisterModel(val name: String, val email: String, val password: String, val confirmPassword: String, val error: String?)
+    data class HomeModel(val name: String, val error: String?)
+    data class ElectionsModel(val error: String?)
+    data class DebugModel(val error: String?)
+    data class Credential(val name: String, val password: String)
 
     companion object {
         val empty = Model(
@@ -73,13 +85,6 @@ data class Model(val page: String,
                 home = HomeModel(name = "", error = null),
                 elections = ElectionsModel(error = null),
                 debug = DebugModel(error = null))
-
-        data class LoginModel(val nameOrEmail: String, val password: String, val error: String?)
-        data class RegisterModel(val name: String, val email: String, val password: String, val confirmPassword: String, val error: String?)
-        data class HomeModel(val name: String, val error: String?)
-        data class ElectionsModel(val error: String?)
-        data class DebugModel(val error: String?)
-        data class Credential(val name: String, val password: String)
 
         fun fromString(string: String): Model {
             val jsonObject = JSON.parse<Model>(string)
