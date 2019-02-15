@@ -95,7 +95,7 @@ class CondorcetReactor(private val api: Api) : Reactor {
     private fun navigateToDebugRequest(model: Model) = Result(model.withDebug(), render())
 
     private fun unsupportedEvent(model: Model, event: GenericEvent) =
-            Result(model.withUnsupportedError(error = "Unsupported event: $event"), emptyList())
+            Result(model.withUnsupportedError(error = "Unsupported event: $event"), render())
 
     private fun render(): List<Promise<Effect>> = listOf(Promise.resolve(Render))
 }

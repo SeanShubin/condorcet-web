@@ -6,7 +6,7 @@ object CondorcetEffects{
                            environment: Environment,
                            components: Components,
                            handleEvent: (GenericEvent) -> Unit) {
-            console.log("Render", JSON.stringify(model))
+            console.log("Render", JSON.stringify(model, null, 2))
             val body = environment.document.body!!
             body.clear()
             val page = model.page

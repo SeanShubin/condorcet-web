@@ -8,7 +8,7 @@ class Debug : Renderable {
         val debugModel = model.debug
         val caption = header("Debug")
         val error = if (debugModel.error == null) listOf() else listOf(span(debugModel.error, "error"))
-        val modelString = pre(JSON.stringify(model))
+        val modelString = pre(JSON.stringify(model, null, 2))
         val list = listOf(caption) + error + listOf(modelString)
         val rendered = div(contents = list, className = "single-column-flex")
         return RenderedAndFocused(rendered, focused = null)
