@@ -39,7 +39,7 @@ class CondorcetReactor(private val api: Api) : Reactor {
     }
 
     private fun initialize(model: Model): Result =
-            Result(model, listOf(Promise.resolve(FireEvent(NavigateToLoginRequest))))
+            Result(model, render())
 
     private fun loginRequest(model: Model, event: LoginRequest): Result {
         val promise = api.login(event.nameOrEmail, event.password)

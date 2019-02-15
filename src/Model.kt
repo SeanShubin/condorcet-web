@@ -66,5 +66,30 @@ data class Model(val page: String,
         data class RegisterModel(val name: String, val email: String, val password: String, val confirmPassword: String, val error: String?)
         data class HomeModel(val name: String, val error: String?)
         data class DebugModel(val error: String?)
+
+        fun fromString(string: String): Model {
+            val jsonObject = JSON.parse<Model>(string)
+            val page = jsonObject.page
+            val login = LoginModel(
+                    nameOrEmail = jsonObject.login.nameOrEmail,
+                    password = jsonObject.login.password,
+                    error = jsonObject.login.error
+            )
+            val register = RegisterModel(
+                    name = jsonObject.register.name,
+                    email = jsonObject.register.email,
+                    password = jsonObject.register.password,
+                    confirmPassword = jsonObject.register.confirmPassword,
+                    error = jsonObject.register.error
+            )
+            val home = HomeModel(
+                    name = jsonObject.home.name,
+                    error = jsonObject.home.error
+            )
+            val debug = DebugModel(
+                    error = jsonObject.debug.error
+            )
+            return Model(page = page, login = login, register = register, home = home, debug = debug)
+        }
     }
 }
