@@ -7,6 +7,7 @@ import Html.input
 import Html.link
 import Html.password
 import Html.span
+import org.w3c.dom.events.KeyboardEvent
 
 class Login: Renderable {
     override fun render(model: Model, handleEvent: (GenericEvent) -> Unit): RenderedAndFocused {
@@ -19,6 +20,13 @@ class Login: Renderable {
             handleEvent(LoginRequest(nameOrEmail.value, password.value))
         }
         val loginButton = button(text = "Login", onclick = handleLogin)
+        val handleKeypress: ((KeyboardEvent) -> dynamic) = { event ->
+            if (event.keyCode == 13) {
+                handleEvent(LoginRequest(nameOrEmail.value, password.value))
+            }
+        }
+        nameOrEmail.onkeypress = handleKeypress
+        password.onkeypress = handleKeypress
         val handleRegister = { handleEvent(NavigateToRegisterRequest )}
         val registerLink = link(text = "Register", onclick=handleRegister)
         val list = listOf(caption) + error + listOf(nameOrEmail, password, loginButton, registerLink)

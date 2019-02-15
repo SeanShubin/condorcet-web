@@ -12,6 +12,34 @@ class ApiFake : Api {
     private val candidates: MutableList<Candidate> = mutableListOf()
     private val voters: MutableList<Voter> = mutableListOf()
     private val ballots: MutableList<Ballot> = mutableListOf()
+
+    init {
+        users.add(User("alice", "alice@email.com", "password"))
+        users.add(User("bob", "bob@email.com", "password"))
+        users.add(User("carol", "carol@email.com", "password"))
+        users.add(User("dave", "dave@email.com", "password"))
+
+        elections.add(Election("alice", "election a"))
+        elections.add(Election("alice", "election b"))
+        elections.add(Election("bob", "election c"))
+
+        candidates.add(Candidate("election a", "candidate a 1"))
+        candidates.add(Candidate("election a", "candidate a 2"))
+        candidates.add(Candidate("election a", "candidate a 3"))
+        candidates.add(Candidate("election b", "candidate b 1"))
+        candidates.add(Candidate("election b", "candidate b 2"))
+        candidates.add(Candidate("election b", "candidate b 3"))
+        candidates.add(Candidate("election c", "candidate c 1"))
+        candidates.add(Candidate("election c", "candidate c 2"))
+        candidates.add(Candidate("election c", "candidate c 3"))
+
+        for (election in elections) {
+            for (user in users) {
+                voters.add(Voter(election.name, user.name))
+            }
+        }
+    }
+
     override fun login(nameOrEmail: String, password: String): Promise<LoginResponse> {
         val user = userByNameOrEmail(nameOrEmail)
         return if (user == null) {

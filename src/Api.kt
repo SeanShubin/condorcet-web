@@ -25,10 +25,10 @@ interface Api {
     data class Credential(val name: String, val password: String)
     data class Election(val owner: String,
                         val name: String,
-                        val start: Date?,
-                        val end: Date?,
-                        val secretBallot: Boolean,
-                        val status: ElectionStatus)
+                        val start: Date? = null,
+                        val end: Date? = null,
+                        val secretBallot: Boolean = true,
+                        val status: ElectionStatus = ElectionStatus.EDITING)
 
     data class Ranking(val rank: Int, val candidateName: String)
     enum class ElectionStatus {
