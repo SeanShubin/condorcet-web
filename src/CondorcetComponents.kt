@@ -3,8 +3,10 @@ object CondorcetComponents : Components {
             Pair("login", Login()),
             Pair("register", Register()),
             Pair("home", Home()),
+            Pair("elections", Elections()),
             Pair("debug", Debug())
     )
 
-    override fun get(name: String): Renderable = map.getValue(name)
+    override fun get(name: String): Renderable =
+            map[name] ?: throw RuntimeException("Component named \"$name\" not found")
 }

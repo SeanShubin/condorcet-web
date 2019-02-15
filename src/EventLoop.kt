@@ -11,10 +11,11 @@ class EventLoop(private val reactor: Reactor,
         storeModel(newState)
         effects.forEach { promise ->
             promise.then { effect ->
+                console.log("handleEvent.effect", effect)
                 effect.apply(newState, environment, components, this::handleEvent)
             }.catch { throwable ->
-                console.log(throwable.message)
-                console.log(throwable.cause)
+                console.log("error message:", throwable.message)
+                console.log("error cause:", throwable.cause)
             }
         }
     }

@@ -6,6 +6,7 @@ import CondorcetEvents.LoginRequest
 import CondorcetEvents.LoginSuccess
 import CondorcetEvents.LogoutRequest
 import CondorcetEvents.NavigateToDebugRequest
+import CondorcetEvents.NavigateToElectionsRequest
 import CondorcetEvents.NavigateToHomeRequest
 import CondorcetEvents.NavigateToLoginRequest
 import CondorcetEvents.NavigateToRegisterRequest
@@ -31,6 +32,7 @@ class CondorcetReactor(private val api: Api) : Reactor {
             is NavigateToLoginRequest -> navigateToLoginRequest(model)
             is NavigateToHomeRequest -> navigateToHomeRequest(model)
             is NavigateToDebugRequest -> navigateToDebugRequest(model)
+            is NavigateToElectionsRequest -> navigateToElectionsRequest(model)
             else -> unsupportedEvent(model, event)
         }
         console.log("react.result.mode", result.model)
@@ -93,6 +95,8 @@ class CondorcetReactor(private val api: Api) : Reactor {
     private fun navigateToHomeRequest(model: Model) = Result(model.withHome(), render())
 
     private fun navigateToDebugRequest(model: Model) = Result(model.withDebug(), render())
+
+    private fun navigateToElectionsRequest(model: Model) = Result(model.withElections(), render())
 
     private fun unsupportedEvent(model: Model, event: GenericEvent) =
             Result(model.withUnsupportedError(error = "Unsupported event: $event"), render())

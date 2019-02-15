@@ -2,6 +2,7 @@ data class Model(val page: String,
                  val login: LoginModel,
                  val register: RegisterModel,
                  val home: HomeModel,
+                 val elections: ElectionsModel,
                  val debug: DebugModel) {
     fun withLoginError(error: String?): Model {
         val newLogin = login.copy(error = error)
@@ -43,6 +44,11 @@ data class Model(val page: String,
         return copy(page = "debug", debug = newDebug)
     }
 
+    fun withElections(): Model {
+        val newElections = elections.copy(error = null)
+        return copy(page = "elections", elections = newElections)
+    }
+
     fun purgePasswords(): Model =
             copy(login = login.copy(password = ""), register = register.copy(password = "", confirmPassword = ""))
 
@@ -60,11 +66,13 @@ data class Model(val page: String,
                         confirmPassword = "",
                         error = null),
                 home = HomeModel(name = "", error = null),
+                elections = ElectionsModel(error = null),
                 debug = DebugModel(error = null))
 
         data class LoginModel(val nameOrEmail: String, val password: String, val error: String?)
         data class RegisterModel(val name: String, val email: String, val password: String, val confirmPassword: String, val error: String?)
         data class HomeModel(val name: String, val error: String?)
+        data class ElectionsModel(val error: String?)
         data class DebugModel(val error: String?)
 
         fun fromString(string: String): Model {
@@ -86,10 +94,13 @@ data class Model(val page: String,
                     name = jsonObject.home.name,
                     error = jsonObject.home.error
             )
+            val elections = ElectionsModel(
+                    error = jsonObject.elections.error
+            )
             val debug = DebugModel(
                     error = jsonObject.debug.error
             )
-            return Model(page = page, login = login, register = register, home = home, debug = debug)
+            return Model(page = page, login = login, register = register, home = home, elections = elections, debug = debug)
         }
     }
 }
