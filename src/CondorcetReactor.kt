@@ -96,8 +96,17 @@ class CondorcetReactor(private val api: Api) : Reactor {
 
     private fun navigateToDebugRequest(model: Model) = Result(model.withDebug(), render())
 
-    private fun navigateToElectionsRequest(model: Model) = Result(model.withElections(), render())
-
+    private fun navigateToElectionsRequest(model: Model): Result {
+        val newModel = model.withElections()
+        val renderEffect = Promise.resolve(Render)
+        val credential = Api.Credential(model.credential.name, model.credential.password)
+        val getElectionsEffect: Promise<FireEvent> = api.listElections(credential).then { listElectionsResponse ->
+            FireEvent(CondorcetEvents.GetElectionsSuccess(listElectionsResponse.elections))
+        }.catch { throwable ->
+            FireEvent(CondorcetEvents.GetElectionsFailure(throwable.message))
+        }
+        return Result(newModel, listOf(renderEffect, getElectionsEffect))
+    }
     private fun unsupportedEvent(model: Model, event: GenericEvent) =
             Result(model.withUnsupportedError(error = "Unsupported event: $event"), render())
 

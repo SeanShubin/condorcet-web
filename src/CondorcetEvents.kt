@@ -8,6 +8,9 @@ object CondorcetEvents {
     data class RegisterRequest(val name: String, val email: String, val password: String, val confirmPassword: String) : GenericEvent
     data class RegisterSuccess(val name: String) : GenericEvent
     data class RegisterFailure(val reason: String?) : GenericEvent
+    data class GetElectionsRequest(val credential: Api.Credential) : GenericEvent
+    data class GetElectionsSuccess(val elections: List<Api.Election>) : GenericEvent
+    data class GetElectionsFailure(val reason: String?) : GenericEvent
     object LogoutRequest : GenericEvent {
         override fun toString(): String = "LogoutRequest"
     }

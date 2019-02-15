@@ -5,7 +5,7 @@ import Html.header
 import Html.link
 import Html.span
 
-class Elections : Renderable {
+class ElectionsPage : Renderable {
     override fun render(model: Model, handleEvent: (GenericEvent) -> Unit): RenderedAndFocused {
         val electionsModel = model.elections
         val caption = header("Elections")

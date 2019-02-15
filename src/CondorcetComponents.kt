@@ -3,7 +3,7 @@ object CondorcetComponents : Components {
             Pair("login", Login()),
             Pair("register", Register()),
             Pair("home", Home()),
-            Pair("elections", Elections()),
+            Pair("elections", ElectionsPage()),
             Pair("debug", Debug())
     )
 

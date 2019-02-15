@@ -1,4 +1,5 @@
 data class Model(val page: String,
+                 val credential: Credential,
                  val login: LoginModel,
                  val register: RegisterModel,
                  val home: HomeModel,
@@ -55,6 +56,10 @@ data class Model(val page: String,
     companion object {
         val empty = Model(
                 page = "login",
+                credential = Credential(
+                        name = "",
+                        password = ""
+                ),
                 login = LoginModel(
                         nameOrEmail = "",
                         password = "",
@@ -74,6 +79,7 @@ data class Model(val page: String,
         data class HomeModel(val name: String, val error: String?)
         data class ElectionsModel(val error: String?)
         data class DebugModel(val error: String?)
+        data class Credential(val name: String, val password: String)
 
         fun fromString(string: String): Model {
             val jsonObject = JSON.parse<Model>(string)
@@ -100,7 +106,15 @@ data class Model(val page: String,
             val debug = DebugModel(
                     error = jsonObject.debug.error
             )
-            return Model(page = page, login = login, register = register, home = home, elections = elections, debug = debug)
+            val credential = Credential(jsonObject.credential.name, jsonObject.credential.password)
+            return Model(
+                    page = page,
+                    credential = credential,
+                    login = login,
+                    register = register,
+                    home = home,
+                    elections = elections,
+                    debug = debug)
         }
     }
 }
