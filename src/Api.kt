@@ -28,7 +28,20 @@ interface Api {
                         val start: Date? = null,
                         val end: Date? = null,
                         val secretBallot: Boolean = true,
-                        val status: ElectionStatus = ElectionStatus.EDITING)
+                        val status: ElectionStatus = ElectionStatus.EDITING) {
+        fun toRow(): List<String> = listOf(
+                owner,
+                name,
+                start?.toString() ?: "",
+                end?.toString() ?: "",
+                secretBallot.toString(),
+                status.toString()
+        )
+
+        companion object {
+            val columnNames = listOf("owner", "name", "start", "end", "secretBallot", "status")
+        }
+    }
 
     data class Ranking(val rank: Int, val candidateName: String)
     enum class ElectionStatus {

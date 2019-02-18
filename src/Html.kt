@@ -58,22 +58,74 @@ object Html{
         return span
     }
 
+    fun td(text: String): HTMLTableCellElement {
+        val tableCell = document.createElement("td") as HTMLTableCellElement
+        tableCell.textContent = text
+        return tableCell
+    }
 
+    fun th(text: String): HTMLTableCellElement {
+        val tableCell = document.createElement("th") as HTMLTableCellElement
+        tableCell.textContent = text
+        return tableCell
+    }
 
-    fun table(headers:List<HTMLTableColElement>, rows:List<HTMLTableRowElement>):HTMLTableElement {
-        val table = document.createElement("table") as HTMLTableElement
-        val tableHead = document.createElement("thead") as HTMLTableCaptionElement
-        val headerRow = document.createElement("tr") as HTMLTableRowElement
-        headers.forEach {
-            headerRow.appendChild(it)
+    fun tr(vararg td: HTMLTableCellElement): HTMLTableRowElement {
+        val tableRow = document.createElement("tr") as HTMLTableRowElement
+        td.forEach {
+            tableRow.appendChild(it)
         }
-        val tableBody = document.createElement("tbody")
-        rows.forEach {
-            tableBody.appendChild(it)
-        }
-        table.appendChild(tableHead)
-        table.appendChild(tableBody)
-        return table
+        return tableRow
+    }
+
+    fun tr(td: List<HTMLTableCellElement>): HTMLTableRowElement = tr(*td.toTypedArray())
+
+    fun trFromStrings(vararg s: String): HTMLTableRowElement = tr(s.map { td(it) })
+
+    fun trFromStrings(s: List<String>): HTMLTableRowElement = trFromStrings(*s.toTypedArray())
+
+    fun headerTrFromStrings(vararg s: String): HTMLTableRowElement = tr(s.map { th(it) })
+
+    fun headerTrFromStrings(s: List<String>): HTMLTableRowElement = headerTrFromStrings(*s.toTypedArray())
+
+    fun caption(text: String): HTMLTableCaptionElement {
+        val tableCaption = document.createElement("caption") as HTMLTableCaptionElement
+        tableCaption.textContent = text
+        return tableCaption
+    }
+
+    fun thead(header: HTMLTableRowElement): HTMLTableSectionElement {
+        val tableHead = document.createElement("thead") as HTMLTableSectionElement
+        tableHead.appendChild(header)
+        return tableHead
+    }
+
+    fun thead(vararg cells: HTMLTableCellElement): HTMLTableSectionElement = thead(tr(*cells))
+
+    fun thead(cells: List<HTMLTableCellElement>): HTMLTableSectionElement = thead(*cells.toTypedArray())
+
+    fun theadFromStrings(vararg cells: String): HTMLTableSectionElement = thead(trFromStrings(*cells))
+
+    fun theadFromStrings(cells: List<String>): HTMLTableSectionElement = theadFromStrings(*cells.toTypedArray())
+
+    fun tbody(vararg rows: HTMLTableRowElement): HTMLTableSectionElement {
+        val tableBody = document.createElement("tbody") as HTMLTableSectionElement
+        rows.forEach { tableBody.appendChild(it) }
+        return tableBody
+    }
+
+    fun tbody(rows: List<HTMLTableRowElement>): HTMLTableSectionElement = tbody(*rows.toTypedArray())
+
+    fun tbodyFromStrings(vararg rowStrings: List<String>): HTMLTableSectionElement = tbody(rowStrings.map { trFromStrings(it) })
+
+    fun tbodyFromStrings(rows: List<List<String>>): HTMLTableSectionElement = tbodyFromStrings(*rows.toTypedArray())
+
+    fun table(caption: HTMLTableCaptionElement, thead: HTMLTableSectionElement, tbody: HTMLTableSectionElement): HTMLTableElement {
+        val tableElement = document.createElement("table") as HTMLTableElement
+        tableElement.caption = caption
+        tableElement.tHead = thead
+        tableElement.appendChild(tbody)
+        return tableElement
     }
 
     private fun appendChildren(element: HTMLElement, children: List<HTMLElement>) {
