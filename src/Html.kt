@@ -64,6 +64,12 @@ object Html{
         return tableCell
     }
 
+    fun td(element: HTMLElement): HTMLTableCellElement {
+        val tableCell = document.createElement("td") as HTMLTableCellElement
+        tableCell.appendChild(element)
+        return tableCell
+    }
+
     fun th(text: String): HTMLTableCellElement {
         val tableCell = document.createElement("th") as HTMLTableCellElement
         tableCell.textContent = text
@@ -104,7 +110,7 @@ object Html{
 
     fun thead(cells: List<HTMLTableCellElement>): HTMLTableSectionElement = thead(*cells.toTypedArray())
 
-    fun theadFromStrings(vararg cells: String): HTMLTableSectionElement = thead(trFromStrings(*cells))
+    fun theadFromStrings(vararg cells: String): HTMLTableSectionElement = thead(headerTrFromStrings(*cells))
 
     fun theadFromStrings(cells: List<String>): HTMLTableSectionElement = theadFromStrings(*cells.toTypedArray())
 

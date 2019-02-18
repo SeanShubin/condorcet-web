@@ -2,9 +2,11 @@ package fake
 
 import Api
 import Api.*
+import Api.ElectionStatus.CONCLUDED
 import Api.ElectionStatus.EDITING
 import kotlin.js.Date
 import kotlin.js.Promise
+
 
 class ApiFake : Api {
     private val users: MutableList<User> = mutableListOf()
@@ -20,7 +22,13 @@ class ApiFake : Api {
         users.add(User("dave", "dave@email.com", "password"))
 
         elections.add(Election("alice", "election a"))
-        elections.add(Election("alice", "election b"))
+        elections.add(Election(
+                "alice",
+                "election b",
+                start = Date(2019, 1, 15),
+                end = Date(2019, 1, 30),
+                secretBallot = false,
+                status = CONCLUDED))
         elections.add(Election("bob", "election c"))
 
         candidates.add(Candidate("election a", "candidate a 1"))

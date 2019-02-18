@@ -1,5 +1,6 @@
 import CondorcetEvents.LogoutRequest
 import CondorcetEvents.NavigateToHomeRequest
+import Html.button
 import Html.caption
 import Html.div
 import Html.header
@@ -7,8 +8,10 @@ import Html.link
 import Html.span
 import Html.table
 import Html.tbody
+import Html.td
 import Html.theadFromStrings
-import Html.trFromStrings
+import Html.tr
+import org.w3c.dom.HTMLTableRowElement
 
 class ElectionsPage : Renderable {
     override fun render(model: Model, handleEvent: (GenericEvent) -> Unit): RenderedAndFocused {
@@ -17,11 +20,11 @@ class ElectionsPage : Renderable {
         val error = if (electionsModel.error == null) listOf() else listOf(span(electionsModel.error, "error"))
 
         val tableCaption = caption("Elections")
-        val tableHeader = theadFromStrings(Api.Election.columnNames)
-        val tableRows = electionsModel.electionList.map { trFromStrings(it.toRow()) }
+        val tableHeader = theadFromStrings(listOf("edit") + Api.Election.columnNames)
+        val tableRows = electionsModel.electionList.map(::electionRow)
         val tableBody = tbody(tableRows)
-
         val electionsTable = table(tableCaption, tableHeader, tableBody)
+
         val homeLink = link(text = "Home") {
             handleEvent(NavigateToHomeRequest)
         }
@@ -31,5 +34,14 @@ class ElectionsPage : Renderable {
         val list = listOf(caption) + error + listOf(electionsTable, homeLink, logoutLink)
         val rendered = div(contents = list, className = "single-column-flex")
         return RenderedAndFocused(rendered, focused = null)
+    }
+
+    private fun electionRow(election: Api.Election): HTMLTableRowElement {
+        val buttonCaption = if (election.status == Api.ElectionStatus.EDITING) "Edit" else "View"
+        val editButton = button(buttonCaption) {}
+        val editButtonCell = td(editButton)
+        val remainingCells = election.toRow().map(::td)
+        val cells = listOf(editButtonCell) + remainingCells
+        return tr(cells)
     }
 }

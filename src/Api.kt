@@ -48,7 +48,9 @@ interface Api {
         EDITING, // may still change, not started yet
         PENDING, // closed for changes, not started yet
         RUNNING, // ballots may be cast
-        CONCLUDED // election is over
+        CONCLUDED; // election is over
+
+        override fun toString(): String = this.name.toLowerCase()
     }
 
     data class LoginResponse(val name: String)
