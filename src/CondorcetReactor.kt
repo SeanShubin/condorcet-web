@@ -1,6 +1,7 @@
 import CondorcetEffects.FireEvent
 import CondorcetEffects.Render
 import CondorcetEvents.GetElectionsFailure
+import CondorcetEvents.GetElectionsSuccess
 import CondorcetEvents.Initialize
 import CondorcetEvents.LoginFailure
 import CondorcetEvents.LoginRequest
@@ -34,6 +35,8 @@ class CondorcetReactor(private val api: Api) : Reactor {
             is NavigateToHomeRequest -> navigateToHomeRequest(model)
             is NavigateToDebugRequest -> navigateToDebugRequest(model)
             is NavigateToElectionsRequest -> navigateToElectionsRequest(model)
+            is GetElectionsSuccess -> getElectionsSuccess(model, event)
+            is GetElectionsFailure -> getElectionsFailure(model, event)
             else -> unsupportedEvent(model, event)
         }
         console.log("react.result.model", result.model)
@@ -58,7 +61,7 @@ class CondorcetReactor(private val api: Api) : Reactor {
 
     private fun loginSuccess(model: Model, event: LoginSuccess): Result {
         val credential = model.credential.copy(name = event.name)
-        val newModel = model.copy(credential = credential).withHome(name = event.name)
+        val newModel = model.copy(credential = credential).homePage(name = event.name)
         return Result(newModel, render())
     }
 
@@ -87,30 +90,35 @@ class CondorcetReactor(private val api: Api) : Reactor {
     }
 
     private fun registerSuccess(model: Model, event: RegisterSuccess) =
-            Result(model.withHome(name = event.name), render())
+            Result(model.homePage(name = event.name), render())
 
-    private fun logoutRequest(model: Model) = Result(model.purgePasswords().withLogin(), render())
+    private fun logoutRequest(model: Model) = Result(model.purgePasswords().loginPage(), render())
 
     private fun registerFailure(model: Model, event: RegisterFailure) = Result(model.withRegisterError(event.reason), render())
 
-    private fun navigateToLoginRequest(model: Model) = Result(model.withLogin(), render())
+    private fun navigateToLoginRequest(model: Model) = Result(model.loginPage(), render())
 
-    private fun navigateToRegisterRequest(model: Model) = Result(model.withRegister(), render())
+    private fun navigateToRegisterRequest(model: Model) = Result(model.registerPage(), render())
 
-    private fun navigateToHomeRequest(model: Model) = Result(model.withHome(), render())
+    private fun navigateToHomeRequest(model: Model) = Result(model.homePage(), render())
 
-    private fun navigateToDebugRequest(model: Model) = Result(model.withDebug(), render())
+    private fun navigateToDebugRequest(model: Model) = Result(model.debugPage(), render())
 
     private fun navigateToElectionsRequest(model: Model): Result {
-        val newModel = model.withElections()
+        val newModel = model.electionsPage()
         val renderEffect = Promise.resolve(Render)
         val credential = Api.Credential(model.credential.name, model.credential.password)
         val getElectionsEffect: Promise<FireEvent> = api.listElections(credential).then { listElectionsResponse ->
-            FireEvent(CondorcetEvents.GetElectionsSuccess(listElectionsResponse.elections))
+            FireEvent(GetElectionsSuccess(listElectionsResponse.elections))
         }.catch { throwable ->
-            FireEvent(CondorcetEvents.GetElectionsFailure(throwable.message))
+            FireEvent(GetElectionsFailure(throwable.message))
         }
         return Result(newModel, listOf(renderEffect, getElectionsEffect))
+    }
+
+    private fun getElectionsSuccess(model:Model, event:GetElectionsSuccess):Result {
+        val newModel = model.electionsPage().electionsList(event.elections)
+        return Result(newModel, render())
     }
 
     private fun getElectionsFailure(model: Model, event: GetElectionsFailure): Result =

@@ -58,6 +58,24 @@ object Html{
         return span
     }
 
+
+
+    fun table(headers:List<HTMLTableColElement>, rows:List<HTMLTableRowElement>):HTMLTableElement {
+        val table = document.createElement("table") as HTMLTableElement
+        val tableHead = document.createElement("thead") as HTMLTableCaptionElement
+        val headerRow = document.createElement("tr") as HTMLTableRowElement
+        headers.forEach {
+            headerRow.appendChild(it)
+        }
+        val tableBody = document.createElement("tbody")
+        rows.forEach {
+            tableBody.appendChild(it)
+        }
+        table.appendChild(tableHead)
+        table.appendChild(tableBody)
+        return table
+    }
+
     private fun appendChildren(element: HTMLElement, children: List<HTMLElement>) {
         children.forEach { element.append(it) }
     }

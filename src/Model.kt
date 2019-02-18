@@ -20,34 +20,39 @@ data class Model(val page: String,
         return copy(page = "debug", debug = newDebug)
     }
 
-    fun withLogin(): Model {
+    fun loginPage(): Model {
         val newLogin = login.copy(error = null)
         return copy(page = "login", login = newLogin)
     }
 
-    fun withRegister(): Model {
+    fun registerPage(): Model {
         val newRegister = register.copy(error = null)
         return copy(page = "register", register = newRegister)
     }
 
-    fun withHome(): Model {
+    fun homePage(): Model {
         val newHome = home.copy(error = null)
         return copy(page = "home", home = newHome)
     }
 
-    fun withHome(name: String): Model {
+    fun homePage(name: String): Model {
         val newHome = home.copy(name = name, error = null)
         return copy(page = "home", home = newHome)
     }
 
-    fun withDebug(): Model {
+    fun debugPage(): Model {
         val newDebug = debug.copy(error = null)
         return copy(page = "debug", debug = newDebug)
     }
 
-    fun withElections(): Model {
+    fun electionsPage(): Model {
         val newElections = elections.copy(error = null)
         return copy(page = "elections", elections = newElections)
+    }
+
+    fun electionsList(electionList:List<Api.Election>):Model {
+        val newElectionsModel = elections.copy(electionList = electionList)
+        return copy(elections = newElectionsModel)
     }
 
     fun withElectionsError(error: String?): Model {
@@ -61,7 +66,7 @@ data class Model(val page: String,
     data class LoginModel(val nameOrEmail: String, val password: String, val error: String?)
     data class RegisterModel(val name: String, val email: String, val password: String, val confirmPassword: String, val error: String?)
     data class HomeModel(val name: String, val error: String?)
-    data class ElectionsModel(val error: String?)
+    data class ElectionsModel(val electionList:List<Api.Election>, val error: String?)
     data class DebugModel(val error: String?)
     data class Credential(val name: String, val password: String)
 
@@ -83,7 +88,7 @@ data class Model(val page: String,
                         confirmPassword = "",
                         error = null),
                 home = HomeModel(name = "", error = null),
-                elections = ElectionsModel(error = null),
+                elections = ElectionsModel(electionList = emptyList(), error = null),
                 debug = DebugModel(error = null))
 
         fun fromString(string: String): Model {
@@ -106,6 +111,7 @@ data class Model(val page: String,
                     error = jsonObject.home.error
             )
             val elections = ElectionsModel(
+                    electionList = jsonObject.elections.electionList,
                     error = jsonObject.elections.error
             )
             val debug = DebugModel(
