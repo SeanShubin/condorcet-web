@@ -32,8 +32,8 @@ interface Api {
         fun toRow(): List<String> = listOf(
                 owner,
                 name,
-                start?.toString() ?: "",
-                end?.toString() ?: "",
+                start?.toISOString() ?: "",
+                end?.toISOString() ?: "",
                 secretBallot.toString(),
                 status.toString()
         )

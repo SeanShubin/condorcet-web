@@ -1,5 +1,5 @@
-import CondorcetEvents.LoginRequest
-import CondorcetEvents.NavigateToRegisterRequest
+import Events.LoginRequest
+import Events.NavigateToRegisterRequest
 import Html.button
 import Html.div
 import Html.header

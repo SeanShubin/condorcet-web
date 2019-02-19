@@ -4,9 +4,9 @@ import kotlin.browser.window
 
 fun main() {
     val api = ApiFake()
-    val reactor = CondorcetReactor(api)
+    val reactor = Reactor
     val environment = Environment(document, window)
-    val components = CondorcetComponents
-    val eventLoop = EventLoop(reactor, environment, components)
-    eventLoop.handleEvent(CondorcetEvents.Initialize)
+    val components = Components
+    val eventLoop = EventLoop(reactor, api, environment, components)
+    eventLoop.handleEvent(Events.Initialize)
 }

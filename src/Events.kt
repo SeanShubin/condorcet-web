@@ -1,4 +1,4 @@
-object CondorcetEvents {
+object Events {
     object Initialize : GenericEvent {
         override fun toString(): String = "Initialize"
     }

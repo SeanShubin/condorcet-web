@@ -1,5 +1,5 @@
 data class Model(val page: String,
-                 val credential: Credential,
+                 val credential: Api.Credential,
                  val login: LoginModel,
                  val register: RegisterModel,
                  val home: HomeModel,
@@ -68,12 +68,11 @@ data class Model(val page: String,
     data class HomeModel(val name: String, val error: String?)
     data class ElectionsModel(val electionList:List<Api.Election>, val error: String?)
     data class DebugModel(val error: String?)
-    data class Credential(val name: String, val password: String)
 
     companion object {
         val empty = Model(
                 page = "login",
-                credential = Credential(
+                credential = Api.Credential(
                         name = "",
                         password = ""
                 ),
@@ -117,7 +116,7 @@ data class Model(val page: String,
             val debug = DebugModel(
                     error = jsonObject.debug.error
             )
-            val credential = Credential(jsonObject.credential.name, jsonObject.credential.password)
+            val credential = Api.Credential(jsonObject.credential.name, jsonObject.credential.password)
             return Model(
                     page = page,
                     credential = credential,

@@ -1,6 +1,7 @@
-class EventLoop(private val reactor: Reactor,
+class EventLoop(private val reactor: GenericReactor,
+                private val api: Api,
                 private val environment: Environment,
-                private val components: Components) {
+                private val components: GenericComponents) {
     fun handleEvent(event: GenericEvent) {
         console.log("handleEvent.event", event)
         val oldState = loadModel()
@@ -9,13 +10,13 @@ class EventLoop(private val reactor: Reactor,
         console.log("handleEvent.newState", newState)
         console.log("handleEvent.effects", effects)
         storeModel(newState)
-        effects.forEach { promise ->
-            promise.then { effect ->
+        effects.forEach { effect ->
+            try {
                 console.log("handleEvent.effect", effect)
-                effect.apply(newState, environment, components, this::handleEvent)
-            }.catch { throwable ->
-                console.log("error message:", throwable.message)
-                console.log("error cause:", throwable.cause)
+                effect.apply(newState, api, environment, components, this::handleEvent)
+            } catch (ex: Throwable) {
+                console.log("handleEvent.error-message:", ex.message)
+                console.log("handleEvent.error-cause:", ex.cause)
             }
         }
     }

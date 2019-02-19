@@ -1,6 +1,7 @@
 interface Effect {
     fun apply(model: Model,
+              api: Api,
               environment: Environment,
-              components: Components,
+              components: GenericComponents,
               handleEvent: (GenericEvent) -> Unit)
 }

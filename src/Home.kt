@@ -1,6 +1,6 @@
-import CondorcetEvents.LogoutRequest
-import CondorcetEvents.NavigateToElectionsRequest
-import CondorcetEvents.NavigateToVotesRequest
+import Events.LogoutRequest
+import Events.NavigateToElectionsRequest
+import Events.NavigateToVotesRequest
 import Html.div
 import Html.header
 import Html.link

@@ -11,22 +11,22 @@ class Debug : Renderable {
         val error = if (debugModel.error == null) listOf() else listOf(span(debugModel.error, "error"))
         val modelString = pre(JSON.stringify(model, null, 2))
         val homeLink = link("Home") {
-            handleEvent(CondorcetEvents.NavigateToHomeRequest)
+            handleEvent(Events.NavigateToHomeRequest)
         }
         val loginLink = link("Login") {
-            handleEvent(CondorcetEvents.NavigateToLoginRequest)
+            handleEvent(Events.NavigateToLoginRequest)
         }
         val registerLink = link("Register") {
-            handleEvent(CondorcetEvents.NavigateToRegisterRequest)
+            handleEvent(Events.NavigateToRegisterRequest)
         }
         val electionsLink = link("Elections") {
-            handleEvent(CondorcetEvents.NavigateToElectionsRequest)
+            handleEvent(Events.NavigateToElectionsRequest)
         }
         val votesLink = link("Votes") {
-            handleEvent(CondorcetEvents.NavigateToVotesRequest)
+            handleEvent(Events.NavigateToVotesRequest)
         }
         val logoutLink = link(text = "Logout") {
-            handleEvent(CondorcetEvents.LogoutRequest)
+            handleEvent(Events.LogoutRequest)
         }
 
         val list = listOf(caption) + error + listOf(modelString, homeLink, loginLink, registerLink, electionsLink, votesLink, logoutLink)

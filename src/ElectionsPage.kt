@@ -1,5 +1,5 @@
-import CondorcetEvents.LogoutRequest
-import CondorcetEvents.NavigateToHomeRequest
+import Events.LogoutRequest
+import Events.NavigateToHomeRequest
 import Html.button
 import Html.caption
 import Html.div
@@ -21,6 +21,10 @@ class ElectionsPage : Renderable {
 
         val tableCaption = caption("Elections")
         val tableHeader = theadFromStrings(listOf("edit") + Api.Election.columnNames)
+        val electionList: List<Api.Election> = electionsModel.electionList
+        electionList.forEach {
+            console.log(it)
+        }
         val tableRows = electionsModel.electionList.map(::electionRow)
         val tableBody = tbody(tableRows)
         val electionsTable = table(tableCaption, tableHeader, tableBody)
