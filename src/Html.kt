@@ -52,6 +52,14 @@ object Html{
         return span
     }
 
+    fun span(vararg elements: HTMLElement): HTMLSpanElement {
+        val span = document.createElement("span") as HTMLSpanElement
+        for (element in elements) {
+            span.appendChild(element)
+        }
+        return span
+    }
+
     fun pre(text: String): HTMLPreElement {
         val span = document.createElement("pre") as HTMLPreElement
         span.textContent = text

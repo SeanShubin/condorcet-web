@@ -75,8 +75,7 @@ object Reactor : GenericReactor {
 
     private fun navigateToElectionsRequest(model: Model): Result {
         val newModel = model.electionsPage()
-        val credential = Api.Credential(model.credential.name, model.credential.password)
-        val listElectionsEffect = Effects.ListElections(credential)
+        val listElectionsEffect = Effects.ListElections(model.credential)
         return Result(newModel, listElectionsEffect)
     }
 
@@ -87,6 +86,12 @@ object Reactor : GenericReactor {
 
     private fun getElectionsFailure(model: Model, event: Events.GetElectionsFailure): Result =
             Result(model.withElectionsError(event.reason), Effects.Render)
+
+    private fun createElectionRequest(model: Model, event: Events.CreateElectionRequest): Result {
+        val effect = Effects.CreateElection(model.credential, event.electionName)
+        val newModel = model.createElectionPage()
+        return Result(newModel, effect)
+    }
 
     private fun unsupportedEvent(model: Model, event: GenericEvent) =
             Result(model.withUnsupportedError(error = "Unsupported event: $event"), Effects.Render)

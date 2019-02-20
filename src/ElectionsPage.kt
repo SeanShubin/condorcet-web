@@ -4,6 +4,7 @@ import Html.button
 import Html.caption
 import Html.div
 import Html.header
+import Html.input
 import Html.link
 import Html.span
 import Html.table
@@ -18,7 +19,11 @@ class ElectionsPage : Renderable {
         val electionsModel = model.elections
         val caption = header("Elections")
         val error = if (electionsModel.error == null) listOf() else listOf(span(electionsModel.error, "error"))
-
+        val createElectionInput = input(text = "", placeholder = "Election Name")
+        val createElectionAction = button("Create") {
+            handleEvent(Events.CreateElectionRequest(createElectionInput.value))
+        }
+        val createElectionSpan = span(createElectionInput, createElectionAction)
         val tableCaption = caption("Elections")
         val tableHeader = theadFromStrings(listOf("edit") + Api.Election.columnNames)
         val electionList: List<Api.Election> = electionsModel.electionList
@@ -35,7 +40,7 @@ class ElectionsPage : Renderable {
         val logoutLink = link(text = "Logout") {
             handleEvent(LogoutRequest)
         }
-        val list = listOf(caption) + error + listOf(electionsTable, homeLink, logoutLink)
+        val list = listOf(caption) + error + listOf(createElectionSpan, electionsTable, homeLink, logoutLink)
         val rendered = div(contents = list, className = "single-column-flex")
         return RenderedAndFocused(rendered, focused = null)
     }

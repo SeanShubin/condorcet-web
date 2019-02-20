@@ -53,6 +53,10 @@ data class Model(val page: String,
         return copy(page = "elections", elections = newElections)
     }
 
+    fun createElectionPage(): Model {
+        return copy(page = "create-election")
+    }
+
     fun electionsList(electionList:List<Api.Election>):Model {
         val newElectionsModel = elections.copy(electionList = electionList)
         return copy(elections = newElectionsModel)

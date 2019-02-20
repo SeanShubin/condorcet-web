@@ -47,4 +47,14 @@ object Effects {
             }
         }
     }
+
+    class CreateElection(private val credential: Api.Credential, private val electionName: String) : Effect {
+        override fun apply(model: Model, api: Api, environment: Environment, components: GenericComponents, handleEvent: (GenericEvent) -> Unit) {
+            api.createElection(credential, electionName).then { createElectionResponse ->
+                handleEvent(Events.CreateElectionSuccess(createElectionResponse.election))
+            }.catch { throwable ->
+                handleEvent(Events.CreateElectionFailure(throwable.message))
+            }
+        }
+    }
 }
