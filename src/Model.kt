@@ -1,3 +1,6 @@
+import DynamicUtil.castArrayToListOrNull
+import DynamicUtil.castOrNull
+
 data class Model(val page: String,
                  val credential: Api.Credential,
                  val login: LoginModel,
@@ -90,31 +93,35 @@ data class Model(val page: String,
                 elections = ElectionsModel(electionList = emptyList(), error = null),
                 debug = DebugModel(error = null))
 
-        fun fromString(string: String): Model {
-            val jsonObject = JSON.parse<Model>(string)
+        fun fromDynamic(jsonObject: dynamic): Model {
             val page = jsonObject.page
+            console.log("jsonObject", jsonObject)
             val login = LoginModel(
-                    nameOrEmail = jsonObject.login.nameOrEmail,
-                    password = jsonObject.login.password,
-                    error = jsonObject.login.error
+                    nameOrEmail = castOrNull(jsonObject?.login?.nameOrEmail) ?: empty.login.nameOrEmail,
+                    password = castOrNull(jsonObject?.login?.password) ?: empty.login.password,
+                    error = castOrNull(jsonObject?.login?.error) ?: empty.login.error
             )
             val register = RegisterModel(
-                    name = jsonObject.register.name,
-                    email = jsonObject.register.email,
-                    password = jsonObject.register.password,
-                    confirmPassword = jsonObject.register.confirmPassword,
-                    error = jsonObject.register.error
+                    name = castOrNull(jsonObject?.register?.name) ?: empty.register.name,
+                    email = castOrNull(jsonObject?.register?.email) ?: empty.register.email,
+                    password = castOrNull(jsonObject?.register?.password) ?: empty.register.password,
+                    confirmPassword = castOrNull(jsonObject?.register?.confirmPassword)
+                            ?: empty.register.confirmPassword,
+                    error = castOrNull(jsonObject?.register?.error) ?: empty.register.error
             )
             val home = HomeModel(
-                    name = jsonObject.home.name,
-                    error = jsonObject.home.error
+                    name = castOrNull(jsonObject?.home?.name) ?: empty.home.name,
+                    error = castOrNull(jsonObject?.home?.error) ?: empty.home.error
             )
             val elections = ElectionsModel(
-                    electionList = jsonObject.elections.electionList,
-                    error = jsonObject.elections.error
+                    electionList = (castArrayToListOrNull(jsonObject?.elections?.electionList)
+                            ?: empty.elections.electionList).map {
+                        Api.Election.fromDynamic(it)
+                    },
+                    error = castOrNull(jsonObject.elections.error) ?: empty.elections.error
             )
             val debug = DebugModel(
-                    error = jsonObject.debug.error
+                    error = castOrNull(jsonObject.debug.error) ?: empty.debug.error
             )
             val credential = Api.Credential(jsonObject.credential.name, jsonObject.credential.password)
             return Model(
@@ -125,6 +132,11 @@ data class Model(val page: String,
                     home = home,
                     elections = elections,
                     debug = debug)
+        }
+
+        fun fromString(string: String): Model {
+            val jsonObject: dynamic = JSON.parse(string)
+            return fromDynamic(jsonObject)
         }
     }
 }

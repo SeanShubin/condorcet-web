@@ -1,3 +1,4 @@
+import DynamicUtil.castOrNull
 import kotlin.js.Date
 import kotlin.js.Promise
 
@@ -40,6 +41,16 @@ interface Api {
 
         companion object {
             val columnNames = listOf("owner", "name", "start", "end", "secretBallot", "status")
+            fun fromDynamic(jsonObject: dynamic): Election {
+                return Election(
+                        owner = castOrNull(jsonObject?.owner) ?: "",
+                        name = castOrNull(jsonObject?.name) ?: "",
+                        start = castOrNull(jsonObject?.start),
+                        end = castOrNull(jsonObject?.end),
+                        secretBallot = castOrNull(jsonObject?.secretBallot) ?: true,
+                        status = castOrNull(jsonObject?.status) ?: ElectionStatus.EDITING
+                )
+            }
         }
     }
 
