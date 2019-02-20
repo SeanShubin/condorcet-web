@@ -22,7 +22,7 @@ class EventLoop(private val reactor: GenericReactor,
     }
 
     private fun loadModel(): Model {
-        val modelString = environment.window.sessionStorage.getItem("model")
+        val modelString = environment.window.localStorage.getItem("model")
         return if (modelString == null) {
             Model.empty
         } else {
@@ -32,6 +32,6 @@ class EventLoop(private val reactor: GenericReactor,
 
     private fun storeModel(model: Model) {
         val modelString = JSON.stringify(model, null, 2)
-        environment.window.sessionStorage.setItem("model", modelString)
+        environment.window.localStorage.setItem("model", modelString)
     }
 }
