@@ -1,7 +1,6 @@
 import Events.LogoutRequest
 import Events.NavigateToHomeRequest
 import Html.button
-import Html.caption
 import Html.div
 import Html.header
 import Html.input
@@ -24,15 +23,10 @@ class ElectionsPage : Renderable {
             handleEvent(Events.CreateElectionRequest(createElectionInput.value))
         }
         val createElectionSpan = span(createElectionInput, createElectionAction)
-        val tableCaption = caption("Elections")
         val tableHeader = theadFromStrings(listOf("edit") + Api.Election.columnNames)
-        val electionList: List<Api.Election> = electionsModel.electionList
-        electionList.forEach {
-            console.log(it)
-        }
         val tableRows = electionsModel.electionList.map(::electionRow)
         val tableBody = tbody(tableRows)
-        val electionsTable = table(tableCaption, tableHeader, tableBody)
+        val electionsTable = table(tableHeader, tableBody)
 
         val homeLink = link(text = "Home") {
             handleEvent(NavigateToHomeRequest)

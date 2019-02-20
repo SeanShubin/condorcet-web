@@ -3,12 +3,12 @@ class EventLoop(private val reactor: GenericReactor,
                 private val environment: Environment,
                 private val components: GenericComponents) {
     fun handleEvent(event: GenericEvent) {
-        console.log("handleEvent.event", event)
+//        console.log("handleEvent.event", event)
         val oldState = loadModel()
-        console.log("handleEvent.oldState", oldState)
+//        console.log("handleEvent.oldState", oldState)
         val (newState, effects) = reactor.react(oldState, event)
-        console.log("handleEvent.newState", newState)
-        console.log("handleEvent.effects", effects)
+//        console.log("handleEvent.newState", newState)
+//        console.log("handleEvent.effects", effects)
         storeModel(newState)
         effects.forEach { effect ->
             try {

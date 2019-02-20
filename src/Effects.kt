@@ -41,9 +41,9 @@ object Effects {
     class ListElections(private val credential: Api.Credential) : Effect {
         override fun apply(model: Model, api: Api, environment: Environment, components: GenericComponents, handleEvent: (GenericEvent) -> Unit) {
             api.listElections(credential).then { listElectionsResponse ->
-                handleEvent(Events.GetElectionsSuccess(listElectionsResponse.elections))
+                handleEvent(Events.ListElectionsSuccess(listElectionsResponse.elections))
             }.catch { throwable ->
-                handleEvent(Events.GetElectionsFailure(throwable.message))
+                handleEvent(Events.ListElectionsFailure(throwable.message))
             }
         }
     }

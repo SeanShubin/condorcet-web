@@ -1,4 +1,6 @@
 import DynamicUtil.castOrNull
+import DynamicUtil.toDate
+import DynamicUtil.toEnum
 import kotlin.js.Date
 import kotlin.js.Promise
 
@@ -45,10 +47,10 @@ interface Api {
                 return Election(
                         owner = castOrNull(jsonObject?.owner) ?: "",
                         name = castOrNull(jsonObject?.name) ?: "",
-                        start = castOrNull(jsonObject?.start),
-                        end = castOrNull(jsonObject?.end),
+                        start = toDate(jsonObject?.start),
+                        end = toDate(jsonObject?.end),
                         secretBallot = castOrNull(jsonObject?.secretBallot) ?: true,
-                        status = castOrNull(jsonObject?.status) ?: ElectionStatus.EDITING
+                        status = toEnum<ElectionStatus>(jsonObject?.status) ?: ElectionStatus.EDITING
                 )
             }
         }

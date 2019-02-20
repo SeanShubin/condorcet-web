@@ -11,9 +11,8 @@ object Events {
     data class CreateElectionRequest(val electionName: String) : GenericEvent
     data class CreateElectionSuccess(val election: Api.Election) : GenericEvent
     data class CreateElectionFailure(val reason: String?) : GenericEvent
-    data class GetElectionsRequest(val credential: Api.Credential) : GenericEvent
-    data class GetElectionsSuccess(val elections: List<Api.Election>) : GenericEvent
-    data class GetElectionsFailure(val reason: String?) : GenericEvent
+    data class ListElectionsSuccess(val elections: List<Api.Election>) : GenericEvent
+    data class ListElectionsFailure(val reason: String?) : GenericEvent
     object LogoutRequest : GenericEvent {
         override fun toString(): String = "LogoutRequest"
     }

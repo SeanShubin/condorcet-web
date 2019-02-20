@@ -142,6 +142,13 @@ object Html{
         return tableElement
     }
 
+    fun table(thead: HTMLTableSectionElement, tbody: HTMLTableSectionElement): HTMLTableElement {
+        val tableElement = document.createElement("table") as HTMLTableElement
+        tableElement.tHead = thead
+        tableElement.appendChild(tbody)
+        return tableElement
+    }
+
     private fun appendChildren(element: HTMLElement, children: List<HTMLElement>) {
         children.forEach { element.append(it) }
     }

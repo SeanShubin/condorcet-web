@@ -1,7 +1,7 @@
 object Reactor : GenericReactor {
     override fun react(model: Model, event: GenericEvent): Result {
         console.log("react.model", model)
-        console.log("react.event", event)
+//        console.log("react.event", event)
         val result = when (event) {
             is Events.Initialize -> initialize(model)
             is Events.LoginRequest -> loginRequest(model, event)
@@ -16,12 +16,16 @@ object Reactor : GenericReactor {
             is Events.NavigateToHomeRequest -> navigateToHomeRequest(model)
             is Events.NavigateToDebugRequest -> navigateToDebugRequest(model)
             is Events.NavigateToElectionsRequest -> navigateToElectionsRequest(model)
-            is Events.GetElectionsSuccess -> getElectionsSuccess(model, event)
-            is Events.GetElectionsFailure -> getElectionsFailure(model, event)
+            is Events.ListElectionsSuccess -> getElectionsSuccess(model, event)
+            is Events.ListElectionsFailure -> getElectionsFailure(model, event)
+            is Events.CreateElectionRequest -> createElectionRequest(model, event)
+            is Events.CreateElectionSuccess -> createElectionSuccess(model)
+            is Events.CreateElectionFailure -> createElectionFailure(model, event)
+
             else -> unsupportedEvent(model, event)
         }
-        console.log("react.result.model", result.model)
-        console.log("react.result.effects", result.effects)
+//        console.log("react.result.model", result.model)
+//        console.log("react.result.effects", result.effects)
         return result
     }
 
@@ -79,17 +83,28 @@ object Reactor : GenericReactor {
         return Result(newModel, listElectionsEffect)
     }
 
-    private fun getElectionsSuccess(model: Model, event: Events.GetElectionsSuccess): Result {
+    private fun getElectionsSuccess(model: Model, event: Events.ListElectionsSuccess): Result {
         val newModel = model.electionsPage().electionsList(event.elections)
         return Result(newModel, Effects.Render)
     }
 
-    private fun getElectionsFailure(model: Model, event: Events.GetElectionsFailure): Result =
+    private fun getElectionsFailure(model: Model, event: Events.ListElectionsFailure): Result =
             Result(model.withElectionsError(event.reason), Effects.Render)
 
     private fun createElectionRequest(model: Model, event: Events.CreateElectionRequest): Result {
         val effect = Effects.CreateElection(model.credential, event.electionName)
         val newModel = model.createElectionPage()
+        return Result(newModel, effect)
+    }
+
+    private fun createElectionSuccess(model: Model): Result {
+        val effect = Effects.ListElections(model.credential)
+        return Result(model, effect)
+    }
+
+    private fun createElectionFailure(model: Model, event: Events.CreateElectionFailure): Result {
+        val newModel = model.withElectionsError(event.reason)
+        val effect = Effects.Render
         return Result(newModel, effect)
     }
 

@@ -99,7 +99,6 @@ data class Model(val page: String,
 
         fun fromDynamic(jsonObject: dynamic): Model {
             val page = jsonObject.page
-            console.log("jsonObject", jsonObject)
             val login = LoginModel(
                     nameOrEmail = castOrNull(jsonObject?.login?.nameOrEmail) ?: empty.login.nameOrEmail,
                     password = castOrNull(jsonObject?.login?.password) ?: empty.login.password,
