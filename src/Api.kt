@@ -42,6 +42,14 @@ interface Api {
         )
 
         companion object {
+            val default = Election(
+                    owner = "<default owner>",
+                    name = "<default name>",
+                    start = null,
+                    end = null,
+                    secretBallot = true,
+                    status = ElectionStatus.EDITING
+            )
             val columnNames = listOf("owner", "name", "start", "end", "secretBallot", "status")
             fun fromDynamic(jsonObject: dynamic): Election {
                 return Election(

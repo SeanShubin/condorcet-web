@@ -45,9 +45,14 @@ object Html{
         return div
     }
 
-    fun span(text: String, className: String): HTMLSpanElement {
+    fun span(text: String): HTMLSpanElement {
         val span = document.createElement("span") as HTMLSpanElement
         span.textContent = text
+        return span
+    }
+
+    fun span(text: String, className: String): HTMLSpanElement {
+        val span = span(text)
         span.addClass(className)
         return span
     }

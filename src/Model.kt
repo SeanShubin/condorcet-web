@@ -7,6 +7,7 @@ data class Model(val page: String,
                  val register: RegisterModel,
                  val home: HomeModel,
                  val elections: ElectionsModel,
+                 val electionModel: ElectionModel,
                  val debug: DebugModel) {
     fun withLoginError(error: String?): Model {
         val newLogin = login.copy(error = error)
@@ -67,6 +68,11 @@ data class Model(val page: String,
         return copy(page = "elections", elections = newElections)
     }
 
+    fun goToElectionPage(election: Api.Election): Model {
+        val newElectionModel = electionModel.copy(election = election)
+        return copy(page = "election", electionModel = newElectionModel)
+    }
+
     fun purgePasswords(): Model =
             copy(login = login.copy(password = ""), register = register.copy(password = "", confirmPassword = ""))
 
@@ -74,6 +80,7 @@ data class Model(val page: String,
     data class RegisterModel(val name: String, val email: String, val password: String, val confirmPassword: String, val error: String?)
     data class HomeModel(val name: String, val error: String?)
     data class ElectionsModel(val electionList:List<Api.Election>, val error: String?)
+    data class ElectionModel(val election: Api.Election, val error: String?)
     data class DebugModel(val error: String?)
 
     companion object {
@@ -95,6 +102,7 @@ data class Model(val page: String,
                         error = null),
                 home = HomeModel(name = "", error = null),
                 elections = ElectionsModel(electionList = emptyList(), error = null),
+                electionModel = ElectionModel(election = Api.Election.default, error = null),
                 debug = DebugModel(error = null))
 
         fun fromDynamic(jsonObject: dynamic): Model {
@@ -121,12 +129,16 @@ data class Model(val page: String,
                             ?: empty.elections.electionList).map {
                         Api.Election.fromDynamic(it)
                     },
-                    error = castOrNull(jsonObject.elections.error) ?: empty.elections.error
+                    error = castOrNull(jsonObject?.elections?.error) ?: empty.elections.error
+            )
+            val electionModel = ElectionModel(
+                    election = Api.Election.fromDynamic(jsonObject?.electionModel?.election),
+                    error = castOrNull(jsonObject?.electionModel?.error)
             )
             val debug = DebugModel(
-                    error = castOrNull(jsonObject.debug.error) ?: empty.debug.error
+                    error = castOrNull(jsonObject?.debug?.error) ?: empty.debug.error
             )
-            val credential = Api.Credential(jsonObject.credential.name, jsonObject.credential.password)
+            val credential = Api.Credential(jsonObject?.credential?.name, jsonObject?.credential?.password)
             return Model(
                     page = page,
                     credential = credential,
@@ -134,6 +146,7 @@ data class Model(val page: String,
                     register = register,
                     home = home,
                     elections = elections,
+                    electionModel = electionModel,
                     debug = debug)
         }
 

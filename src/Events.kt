@@ -40,4 +40,9 @@ object Events {
     object NavigateToVotesRequest : GenericEvent {
         override fun toString(): String = "NavigateToVotesRequest"
     }
+
+    data class NavigateToElectionRequest(val electionName: String) : GenericEvent
+    data class NavigateToElectionSuccess(val election: Api.Election) : GenericEvent
+    data class NavigateToElectionFailure(val reason: String?) : GenericEvent
+    data class DisplayException(val ex: Throwable) : GenericEvent
 }

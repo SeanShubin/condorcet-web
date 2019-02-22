@@ -4,6 +4,7 @@ object Components : GenericComponents {
             Pair("register", Register()),
             Pair("home", Home()),
             Pair("elections", ElectionsPage()),
+            Pair("election", ElectionPage()),
             Pair("debug", Debug())
     )
 

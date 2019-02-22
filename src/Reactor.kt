@@ -21,7 +21,10 @@ object Reactor : GenericReactor {
             is Events.CreateElectionRequest -> createElectionRequest(model, event)
             is Events.CreateElectionSuccess -> createElectionSuccess(model)
             is Events.CreateElectionFailure -> createElectionFailure(model, event)
-
+            is Events.NavigateToElectionRequest -> navigateToElectionRequest(model, event)
+            is Events.NavigateToElectionSuccess -> navigateToElectionSuccess(model, event)
+            is Events.NavigateToElectionFailure -> navigateToElectionFailure(model, event)
+            is Events.DisplayException -> displayException(model, event)
             else -> unsupportedEvent(model, event)
         }
 //        console.log("react.result.model", result.model)
@@ -107,6 +110,24 @@ object Reactor : GenericReactor {
         val effect = Effects.Render
         return Result(newModel, effect)
     }
+
+    private fun navigateToElectionRequest(model: Model, event: Events.NavigateToElectionRequest): Result {
+        val effect = Effects.GetElection(event.electionName)
+        return Result(model, effect)
+    }
+
+    private fun navigateToElectionSuccess(model: Model, event: Events.NavigateToElectionSuccess): Result {
+        val newModel = model.goToElectionPage(event.election)
+        return Result(newModel, Effects.Render)
+    }
+
+    private fun navigateToElectionFailure(model: Model, event: Events.NavigateToElectionFailure): Result {
+        val newModel = model.withElectionsError(event.reason)
+        return Result(newModel, Effects.Render)
+    }
+
+    private fun displayException(model: Model, event: Events.DisplayException) =
+            Result(model.withUnsupportedError(error = "Unhandled exception ${event.ex.message}"), Effects.Render)
 
     private fun unsupportedEvent(model: Model, event: GenericEvent) =
             Result(model.withUnsupportedError(error = "Unsupported event: $event"), Effects.Render)

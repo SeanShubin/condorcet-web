@@ -24,7 +24,7 @@ class ElectionsPage : Renderable {
         }
         val createElectionSpan = span(createElectionInput, createElectionAction)
         val tableHeader = theadFromStrings(listOf("edit") + Api.Election.columnNames)
-        val tableRows = electionsModel.electionList.map(::electionRow)
+        val tableRows = electionsModel.electionList.map { electionRow(it, handleEvent) }
         val tableBody = tbody(tableRows)
         val electionsTable = table(tableHeader, tableBody)
 
@@ -39,9 +39,11 @@ class ElectionsPage : Renderable {
         return RenderedAndFocused(rendered, focused = null)
     }
 
-    private fun electionRow(election: Api.Election): HTMLTableRowElement {
+    private fun electionRow(election: Api.Election, handleEvent: (GenericEvent) -> Unit): HTMLTableRowElement {
         val buttonCaption = if (election.status == Api.ElectionStatus.EDITING) "Edit" else "View"
-        val editButton = button(buttonCaption) {}
+        val editButton = button(buttonCaption) {
+            handleEvent(Events.NavigateToElectionRequest(election.name))
+        }
         val editButtonCell = td(editButton)
         val remainingCells = election.toRow().map(::td)
         val cells = listOf(editButtonCell) + remainingCells

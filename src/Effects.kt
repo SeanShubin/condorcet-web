@@ -7,13 +7,17 @@ object Effects {
                            environment: Environment,
                            components: GenericComponents,
                            handleEvent: (GenericEvent) -> Unit) {
-            val body = environment.document.body!!
-            body.clear()
-            val page = model.page
-            val component = components[page]
-            val (rendered, focused) = component.render(model, handleEvent)
-            body.appendChild(rendered)
-            focused?.focus()
+            try {
+                val body = environment.document.body!!
+                body.clear()
+                val page = model.page
+                val component = components[page]
+                val (rendered, focused) = component.render(model, handleEvent)
+                body.appendChild(rendered)
+                focused?.focus()
+            } catch (ex: Throwable) {
+                handleEvent(Events.DisplayException(ex))
+            }
         }
     }
 
@@ -54,6 +58,16 @@ object Effects {
                 handleEvent(Events.CreateElectionSuccess(createElectionResponse.election))
             }.catch { throwable ->
                 handleEvent(Events.CreateElectionFailure(throwable.message))
+            }
+        }
+    }
+
+    class GetElection(private val electionName: String) : Effect {
+        override fun apply(model: Model, api: Api, environment: Environment, components: GenericComponents, handleEvent: (GenericEvent) -> Unit) {
+            api.getElection(model.credential, electionName).then { getElectionResponse ->
+                handleEvent(Events.NavigateToElectionSuccess(getElectionResponse.election))
+            }.catch { throwable ->
+                handleEvent(Events.NavigateToElectionFailure(throwable.message))
             }
         }
     }

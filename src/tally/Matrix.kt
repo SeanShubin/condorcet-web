@@ -49,7 +49,7 @@ class Matrix(val rows: List<List<Int>>) {
     }
 
     fun schulzeTally(): List<List<Int>> = schulzeTally(emptyList(), emptyList())
-    private fun schulzeTally(soFar: List<List<Int>>, indices: List<Int>): List<List<Int>> {
+    private tailrec fun schulzeTally(soFar: List<List<Int>>, indices: List<Int>): List<List<Int>> {
         val size = squareSize()
         return if (indices.size == size) soFar
         else {
@@ -97,4 +97,3 @@ class Matrix(val rows: List<List<Int>>) {
         }
     }
 }
-
