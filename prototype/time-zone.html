@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Time Zone</title>
+    <style>
+        body {
+            display: inline-grid;
+            grid-template-columns: auto auto;
+            grid-column-gap: 5px;
+            grid-row-gap: 5px;
+        }
+    </style>
+    <script type="application/javascript">
+        function lookup(className) {
+            const matchingElements = document.getElementsByClassName(className);
+            if (matchingElements.size === 0) {
+                throw `No elements matched class ${className}`
+            } else if (matchingElements.size > 1) {
+                throw `Expected exactly 1 element to match class ${className}, got ${matchingElements.size}`
+            } else {
+                return matchingElements.item(0);
+            }
+        }
+
+        function onLocalTimeInput() {
+            const utcDateTimeString = localStringToCoordinatedString(lookup('local-time').value);
+            lookup('universal-time').value = utcDateTimeString;
+        }
+
+        function onLocalTimeBlur() {
+            const element = lookup('local-time');
+            const date = parseDateTime(element.value);
+            element.value = dateToLocalString(date);
+        }
+
+        function onUniversalTimeInput() {
+            const localDateTimeString = coordinatedStringToLocalString(lookup('universal-time').value);
+            lookup('local-time').value = localDateTimeString;
+        }
+
+        function onUniversalTimeBlur() {
+            const element = lookup('universal-time')
+            const date = parseUtcDateTime(element.value);
+            element.value = dateToUtcString(date);
+        }
+
+        function dateToLocalString(date) {
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            const formatted = year + '-' + padDatePart(month) + '-' + padDatePart(day) +
+                ' ' + padDatePart(hours) + ':' + padDatePart(minutes);
+            return formatted;
+        }
+
+        function dateToUtcString(date) {
+            const year = date.getUTCFullYear();
+            const month = date.getUTCMonth() + 1;
+            const day = date.getUTCDate();
+            const hours = date.getUTCHours();
+            const minutes = date.getUTCMinutes();
+            const formatted = year + '-' + padDatePart(month) + '-' + padDatePart(day) +
+                ' ' + padDatePart(hours) + ':' + padDatePart(minutes);
+            return formatted;
+        }
+
+        function parseDateTimeParts(dateTimeString) {
+            const [year, month, day, hours, minutes] = dateTimeString.split(/[^\d]+/);
+            const now = new Date();
+            const result = {
+                year: setDefault(year, now.getFullYear()),
+                month: setDefault(month, now.getMonth() + 1),
+                day: setDefault(day, now.getDate()),
+                hours: setDefault(hours, 0),
+                minutes: setDefault(minutes, 0)
+            };
+            return result;
+        }
+
+        function parseDateTime(dateTimeString) {
+            const {year, month, day, hours, minutes} = parseDateTimeParts(dateTimeString);
+            const date = new Date(year, month - 1, day, hours, minutes);
+            return date;
+        }
+
+        function parseUtcDateTime(dateTimeString) {
+            const {year, month, day, hours, minutes} = parseDateTimeParts(dateTimeString);
+            const date = new Date(Date.UTC(year, month - 1, day, hours, minutes));
+            return date;
+
+        }
+
+        function localStringToCoordinatedString(localString) {
+            const local = parseDateTime(localString);
+            return dateToUtcString(local);
+        }
+
+        function coordinatedStringToLocalString(utcString) {
+            const utc = parseUtcDateTime(utcString);
+            return dateToLocalString(utc);
+        }
+
+        function padDatePart(targetNumber) {
+            return padLeft({
+                target: targetNumber.toString(),
+                padChar: '0',
+                size: 2
+            });
+        }
+
+        function padLeft(options) {
+            const {target, padChar, size} = options;
+            if (target.length < size) {
+                const padding = padChar.repeat(size - target.length);
+                return padding + target;
+            } else {
+                return target;
+            }
+        }
+
+        function setDefault(value, defaultValue) {
+            if (typeof value === 'undefined') {
+                return defaultValue;
+            } else if (value === '') {
+                return defaultValue;
+            } else {
+                return value;
+            }
+        }
+
+        function init() {
+            lookup('local-time').value = dateToLocalString(new Date());
+            onLocalTimeInput();
+        }
+
+        window.onload = init;
+    </script>
+</head>
+<body>
+<span>
+    Local Time
+</span>
+<input class="local-time" oninput="onLocalTimeInput()" onblur="onLocalTimeBlur()">
+<span>
+    Coordinated Universal Time
+</span>
+<input class="universal-time" oninput="onUniversalTimeInput()" onblur="onUniversalTimeBlur()">
+</body>
+</html>
