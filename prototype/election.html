@@ -5,17 +5,46 @@
     <title>Election C</title>
     <link rel="stylesheet" type="text/css" href="../meyerweb-reset.css">
     <link rel="stylesheet" type="text/css" href="../index.css">
+    <style>
+        .election-settings {
+            display: inline-grid;
+            grid-template-columns: auto auto auto;
+            grid-column-gap: 5px;
+            grid-row-gap: 5px;
+        }
+
+        .election-settings .columns-2-and-3 {
+            grid-column-start: 2;
+            grid-column-end: 4;
+        }
+    </style>
 </head>
 <body>
 <div class="single-column-flex">
     <h1>Election C</h1>
-    <div class="two-column-grid">
+    <div class="election-settings">
+        <span>Owner</span>
+        <input class="columns-2-and-3" disabled value="Alice">
+
+        <span>Status</span>
+        <input class="columns-2-and-3" disabled value="Editing (will not go live)">
+
+        <span></span>
+        <span>local</span>
+        <span>utc</span>
+
         <span>Start</span>
-        <input type="datetime-local">
+        <input placeholder="YYYY-MM-DD HH:MM">
+        <input placeholder="YYYY-MM-DD HH:MM">
+
         <span>End</span>
-        <input type="datetime-local">
+        <input placeholder="YYYY-MM-DD HH:MM">
+        <input placeholder="YYYY-MM-DD HH:MM">
     </div>
     <span><input type="checkbox">Secret Ballot</span>
+    <button>Done Editing</button>
+    <button>Start Now</button>
+    <button>End Now</button>
     <table>
         <thead>
         <tr>
