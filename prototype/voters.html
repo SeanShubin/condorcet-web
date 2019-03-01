@@ -8,30 +8,35 @@
 </head>
 <body>
 <div class="single-column-flex">
-    <h1>Eligible to vote in Election C</h1>
-    <select multiple="multiple" size="15">
-        <option value="aurora clarke">aurora clarke</option>
-        <option value="avery zamora">avery zamora</option>
-        <option value="carey bryan">carey bryan</option>
-        <option value="carey oneill">carey oneill</option>
-        <option value="cory walters">cory walters</option>
-        <option value="darius townsend">darius townsend</option>
-        <option value="gertrude arnold">gertrude arnold</option>
-        <option value="julianne meyer">julianne meyer</option>
-        <option value="ken fox">ken fox</option>
-        <option value="les ramsey">les ramsey</option>
-        <option value="mara benton">mara benton</option>
-        <option value="sasha wells">sasha wells</option>
-        <option value="saul patel">saul patel</option>
-        <option value="tanya gibbs">tanya gibbs</option>
-        <option value="tracie lucas">tracie lucas</option>
-    </select>
-    <div>
-        <button>All</button>
-        <button>None</button>
-        <button>Invert</button>
-        <button>Remove</button>
-    </div>
+    <h1>Voters</h1>
+    <fieldset class="single-column-flex">
+        <legend>Eligible to vote in Election C</legend>
+        <select multiple="multiple" size="15">
+            <option value="aurora clarke">aurora clarke</option>
+            <option value="avery zamora">avery zamora</option>
+            <option value="carey bryan">carey bryan</option>
+            <option value="carey oneill">carey oneill</option>
+            <option value="cory walters">cory walters</option>
+            <option value="darius townsend">darius townsend</option>
+            <option value="gertrude arnold">gertrude arnold</option>
+            <option value="julianne meyer">julianne meyer</option>
+            <option value="ken fox">ken fox</option>
+            <option value="les ramsey">les ramsey</option>
+            <option value="mara benton">mara benton</option>
+            <option value="sasha wells">sasha wells</option>
+            <option value="saul patel">saul patel</option>
+            <option value="tanya gibbs">tanya gibbs</option>
+            <option value="tracie lucas">tracie lucas</option>
+        </select>
+        <div>
+            <button>All</button>
+            <button>None</button>
+            <button>Invert</button>
+            <button>Make not eligible</button>
+        </div>
+    </fieldset>
+    <fieldset class="single-column-flex">
+        <legend>Not eligible to vote in Election C</legend>
     <select multiple="multiple" size="5">
         <option value="alex spencer">alex spencer</option>
         <option value="cara howell">cara howell</option>
@@ -43,8 +48,9 @@
         <button>All</button>
         <button>None</button>
         <button>Invert</button>
-        <button>Add</button>
+        <button>Make eligible</button>
     </div>
+    </fieldset>
     <a href="#">Election</a>
     <a href="#">Home</a>
     <a href="#">Logout</a>
